@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list_app/cores/widgets/custom_textbutton.dart';
+import 'package:todo_list_app/features/homePage/presentation/view/widgets/create_task_bottom_widget.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/widgets/custom_task_card.dart';
 
 import '../../../../constents.dart';
 import '../../../../cores/utlis/app_fonts.dart';
+import '../../../../cores/widgets/custom_textfield_rounded_border.dart';
 import '../../../../cores/widgets/segment_button.dart';
 import '../../../../cores/widgets/sliver_sizedbox.dart';
 
@@ -28,22 +30,13 @@ class HomePage extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            SegmentButtonList(),
+            const SegmentButtonList(),
             const SizedBox(
               height: 20,
             ),
-            CustomTaskCard(),
+            const CustomTaskCard(),
             const Spacer(),
-            SizedBox(
-              height: 50,
-              width: MediaQuery.sizeOf(context).width,
-              child: CustomTextButton(
-                text: 'Create Task',
-                isTenRounded: true,
-                textSize: 18,
-                buttonColor: mainColor,
-              ),
-            )
+            const CreateTaskButtonWidget()
           ],
         ),
       )),
