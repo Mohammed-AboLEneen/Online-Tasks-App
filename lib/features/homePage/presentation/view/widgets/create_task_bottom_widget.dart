@@ -66,7 +66,6 @@ class _CreateTaskButtonWidgetState extends State<CreateTaskButtonWidget> {
                       labelText: 'Due Date',
                       backgroundColor: Colors.grey.withOpacity(.2),
                       textColor: Colors.teal,
-                      c
                       padding: const EdgeInsets.only(left: 20),
                       keyboardType: TextInputType.none,
                       onTap: () async {

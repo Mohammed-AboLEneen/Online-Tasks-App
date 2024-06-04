@@ -17,34 +17,35 @@ class CustomTaskCard extends StatelessWidget {
         boxShadow: const [
           BoxShadow(
             color: Colors.grey,
-            blurRadius: 2.5,
-            offset: Offset(0, 3), // Shadow position
+            blurRadius: 1,
+            offset: Offset(0, 2), // Shadow position
           ),
         ],
       ),
       child: Row(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Task Name',
-                style: AppFonts.textStyle20Bold,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Task Name',
-                style: AppFonts.textStyle15Regular,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Task Name',
+                  style: AppFonts.textStyle20Bold,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'Due Date: Mon. 21/3/2024',
+                  style: AppFonts.textStyle15Regular,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ],
+            ),
           ),
-          const Spacer(),
           CircleAvatar(
             backgroundColor: mainColor.withOpacity(.1),
             child: FaIcon(FontAwesomeIcons.check,
