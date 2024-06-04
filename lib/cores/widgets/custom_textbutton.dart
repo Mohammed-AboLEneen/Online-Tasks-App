@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../utlis/app_fonts.dart';
+
 class CustomTextButton extends StatelessWidget {
   final String text;
   final Color? textColor;
@@ -18,7 +19,8 @@ class CustomTextButton extends StatelessWidget {
     this.buttonColor,
     this.onPressed,
     this.textSize = 14,
-    this.buttonColorLightness, required this.isTenRounded,
+    this.buttonColorLightness,
+    required this.isTenRounded,
   });
 
   @override
@@ -29,8 +31,8 @@ class CustomTextButton extends StatelessWidget {
         overlayColor: WidgetStateProperty.all(Colors.white.withOpacity(.2)),
         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(isTenRounded ? 10.0 : 20), // Change this value as needed
+            borderRadius: BorderRadius.circular(
+                isTenRounded ? 10.0 : 20), // Change this value as needed
           ),
         ),
         backgroundColor: WidgetStateProperty.all<Color>(
@@ -41,7 +43,7 @@ class CustomTextButton extends StatelessWidget {
         fit: BoxFit.scaleDown,
         child: Text(
           text,
-          style: AppFonts.textStyle15Regular?.copyWith(
+          style: AppFonts.textStyle20Bold?.copyWith(
               fontSize: textSize,
               color: textColor ?? Colors.white,
               fontWeight: FontWeight.w500),
