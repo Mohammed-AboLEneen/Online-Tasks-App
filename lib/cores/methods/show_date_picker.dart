@@ -9,7 +9,6 @@ Future<DateTime?> showDatePickerMethod(
       firstDate: DateTime(
         2024,
       ),
-      lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
             data: ThemeData.light().copyWith(
@@ -22,7 +21,8 @@ Future<DateTime?> showDatePickerMethod(
               ),
             ),
             child: child!);
-      });
+      },
+      lastDate: DateTime(2025));
 
   if (pickedDate != null) {
     return pickedDate;

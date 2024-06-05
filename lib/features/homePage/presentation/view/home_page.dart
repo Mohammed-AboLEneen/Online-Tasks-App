@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_app/constents.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/widgets/create_task_bottom_widget.dart';
-import 'package:todo_list_app/features/homePage/presentation/view/widgets/custom_task_card.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/widgets/tasks_listview.dart';
 import '../../../../cores/utlis/app_fonts.dart';
 import '../../../../cores/widgets/segment_button.dart';
@@ -53,6 +52,8 @@ class HomePage extends StatelessWidget {
                           homePageCubit.tasks.isNotEmpty)
                         TasksListview(
                           tasks: homePageCubit.tasks,
+                          topicBox: homePageCubit
+                              .topics[homePageCubit.currentTopicIndex],
                         ),
                       Padding(
                         padding: const EdgeInsets.only(top: 5),

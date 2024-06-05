@@ -35,11 +35,12 @@ class CreateTaskButtonWidget extends StatelessWidget {
             context: context,
             isScrollControlled: true,
             builder: (BuildContext context) {
-              print(topicBox);
               return BlocProvider(
                   create: (context) =>
                       AddNewTaskCubit()..initCurrentTasksBox(topicBox),
-                  child: const AddNewTaskWidget());
+                  child: const CustomContentTaskWidget(
+                    isEdit: false,
+                  ));
             },
           ).then((value) {
             if (value != null) {
