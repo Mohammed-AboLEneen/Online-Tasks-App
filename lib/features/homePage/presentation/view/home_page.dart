@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                      if (state is GetTaskSuccessState ||
+                      if (state is! GetTaskLoadingState ||
                           homePageCubit.tasks.isNotEmpty)
                         TasksListview(
                           tasks: homePageCubit.tasks,

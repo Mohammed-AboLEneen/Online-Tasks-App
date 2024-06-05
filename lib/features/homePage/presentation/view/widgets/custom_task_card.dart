@@ -20,8 +20,8 @@ class CustomTaskCard extends StatelessWidget {
         boxShadow: const [
           BoxShadow(
             color: Colors.grey,
-            blurRadius: 1,
-            offset: Offset(0, 2), // Shadow position
+            blurRadius: .2,
+            offset: Offset(0, 1.5), // Shadow position
           ),
         ],
       ),
