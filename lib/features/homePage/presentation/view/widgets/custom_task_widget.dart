@@ -16,9 +16,14 @@ class CustomContentTaskWidget extends StatefulWidget {
   final TaskCardModel? task;
   final bool isEdit;
   final int index;
+  final String topic;
 
   const CustomContentTaskWidget(
-      {super.key, this.task, required this.isEdit, required this.index});
+      {super.key,
+      this.task,
+      required this.isEdit,
+      required this.index,
+      required this.topic});
 
   @override
   State<CustomContentTaskWidget> createState() =>
@@ -175,8 +180,9 @@ class _CustomContentTaskWidgetState extends State<CustomContentTaskWidget> {
                   textSize: 18,
                   buttonColor: Colors.red.withOpacity(.8),
                   onPressed: () async {
-                    await BlocProvider.of<EditTaskCubit>(context)
-                        .deleteTask(index: widget.task?.index ?? 0);
+                    await BlocProvider.of<EditTaskCubit>(context).deleteTask(
+                        index: widget.task?.index ?? 0,
+                        status: widget.task?.status ?? 0);
 
                     if (!context.mounted) return;
                     Navigator.pop(context, 'refresh');

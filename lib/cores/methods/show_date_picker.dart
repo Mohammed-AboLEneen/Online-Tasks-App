@@ -6,9 +6,7 @@ Future<DateTime?> showDatePickerMethod(
   final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(
-        2024,
-      ),
+      firstDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
             data: ThemeData.light().copyWith(

@@ -12,20 +12,30 @@ class HomeRepoImp implements HomeRepo {
   }
 
   @override
-  Future<void> deleteTask({required int index, required String topic}) async {
+  Future<void> deleteTask({required int index, required int status}) async {
     await localSource.deleteTask(
       key: index,
-      topic: topic,
+      status: status,
     );
   }
 
   @override
-  Future<List<TaskCardModel>> getTasks({required String topic}) async {
-    return await localSource.getTasks(topic: topic);
+  List<TaskCardModel> getTasks({required String topic}) {
+    return localSource.getTasks(topic: topic);
   }
 
   @override
   Future<void> initAllBoxes() async {
     await localSource.initCurrentTasksBox();
+  }
+
+  @override
+  Future<void> changeTaskStatus({required TaskCardModel task}) async {
+    await localSource.changeTaskStatus(task: task);
+  }
+
+  @override
+  Future<void> editTask({required TaskCardModel task}) async {
+    await localSource.editTaskContent(task: task);
   }
 }

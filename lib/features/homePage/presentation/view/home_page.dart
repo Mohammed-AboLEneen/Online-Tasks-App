@@ -51,13 +51,17 @@ class HomePage extends StatelessWidget {
                       if (state is! GetTaskLoadingState ||
                           homePageCubit.tasks.isNotEmpty)
                         TasksListview(
-                          tasks: homePageCubit.tasks,
-                          tasksLen: homePageCubit.allTasksCount,
-                        ),
+                            tasks: homePageCubit.tasks,
+                            tasksLen: homePageCubit.allTasksCount,
+                            topic: homePageCubit
+                                .topics[homePageCubit.currentTopicIndex]),
                       Padding(
                         padding: const EdgeInsets.only(top: 5),
                         child: CreateTaskButtonWidget(
-                            tasksLength: homePageCubit.allTasksCount),
+                          tasksLength: homePageCubit.allTasksCount,
+                          topic: homePageCubit
+                              .topics[homePageCubit.currentTopicIndex],
+                        ),
                       ),
                     ],
                   ),
