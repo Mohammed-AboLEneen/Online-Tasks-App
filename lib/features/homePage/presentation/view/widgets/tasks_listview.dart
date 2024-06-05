@@ -6,7 +6,7 @@ import '../../../../../cores/utlis/app_fonts.dart';
 import '../../../data/models/task_card_model.dart';
 import '../../manager/edit_task_cubit/edit_task_cubit.dart';
 import '../../manager/home_page_cubit/home_page_cubit.dart';
-import 'add_new_task_widget.dart';
+import 'custom_task_widget.dart';
 import 'custom_task_card.dart';
 
 class TasksListview extends StatelessWidget {

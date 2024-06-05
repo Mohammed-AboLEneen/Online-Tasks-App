@@ -24,4 +24,10 @@ class EditTaskCubit extends Cubit<EditTaskStates> {
     await currentTasksBox?.putAt(index, task);
     emit(EditTaskSuccessState());
   }
+
+  Future<void> deleteTask({required int index}) async {
+    currentTasksBox ??= await Hive.openBox<TaskCardModel>(topicBox);
+    await currentTasksBox?.deleteAt(index);
+    emit(EditTaskSuccessState());
+  }
 }

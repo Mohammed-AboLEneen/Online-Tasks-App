@@ -16,6 +16,8 @@ class EditTaskSuccessState extends HomePageStates {}
 
 class GetTaskSuccessState extends HomePageStates {}
 
+class EditTaskSuccessState extends HomePageStates {}
+
 class GetTaskLoadingState extends HomePageStates {}
 
 class GetTaskFailureState extends HomePageStates {
