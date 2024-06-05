@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_list_app/constents.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/widgets/create_task_bottom_widget.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/widgets/custom_task_card.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/widgets/tasks_listview.dart';
@@ -40,9 +41,19 @@ class HomePage extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      TasksListview(
-                        tasks: homePageCubit.tasks,
-                      ),
+                      if (state is GetTaskLoadingState)
+                        Expanded(
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              color: mainColor,
+                            ),
+                          ),
+                        ),
+                      if (state is GetTaskSuccessState ||
+                          homePageCubit.tasks.isNotEmpty)
+                        TasksListview(
+                          tasks: homePageCubit.tasks,
+                        ),
                       Padding(
                         padding: const EdgeInsets.only(top: 5),
                         child: CreateTaskButtonWidget(

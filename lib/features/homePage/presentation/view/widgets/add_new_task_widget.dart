@@ -101,12 +101,15 @@ class _AddNewTaskWidgetState extends State<AddNewTaskWidget> {
                   isTenRounded: true,
                   textSize: 18,
                   buttonColor: mainColor,
-                  onPressed: () {
-                    BlocProvider.of<AddNewTaskCubit>(context).addTask(
+                  onPressed: () async {
+                    await BlocProvider.of<AddNewTaskCubit>(context).addTask(
                         TaskCardModel(
                             title: titleController.text,
                             date: dateController.text,
                             status: 0));
+
+                    if (!context.mounted) return;
+                    Navigator.pop(context, 'refresh');
                   },
                 ),
               );

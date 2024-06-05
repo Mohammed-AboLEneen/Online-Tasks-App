@@ -14,6 +14,8 @@ class ChangeTaskTopicState extends HomePageStates {}
 
 class GetTaskSuccessState extends HomePageStates {}
 
+class GetTaskLoadingState extends HomePageStates {}
+
 class GetTaskFailureState extends HomePageStates {
   final String error;
 

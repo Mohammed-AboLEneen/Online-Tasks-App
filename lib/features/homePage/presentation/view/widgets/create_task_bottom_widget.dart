@@ -30,7 +30,7 @@ class CreateTaskButtonWidget extends StatelessWidget {
         isTenRounded: true,
         textSize: 18,
         buttonColor: mainColor,
-        onPressed: () {
+        onPressed: () async {
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
@@ -41,7 +41,11 @@ class CreateTaskButtonWidget extends StatelessWidget {
                       AddNewTaskCubit()..initCurrentTasksBox(topicBox),
                   child: const AddNewTaskWidget());
             },
-          );
+          ).then((value) {
+            if (value != null) {
+              BlocProvider.of<HomePageCubit>(context).getTasks();
+            }
+          });
         },
       ),
     );
