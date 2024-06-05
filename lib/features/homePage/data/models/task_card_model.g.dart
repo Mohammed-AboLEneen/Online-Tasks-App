@@ -26,7 +26,7 @@ class TaskCardModelAdapter extends TypeAdapter<TaskCardModel> {
   @override
   void write(BinaryWriter writer, TaskCardModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)

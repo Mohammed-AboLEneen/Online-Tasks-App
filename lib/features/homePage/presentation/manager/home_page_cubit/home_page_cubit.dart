@@ -19,6 +19,7 @@ class HomePageCubit extends Cubit<HomePageStates> {
   void initCurrentTasksBox() async {
     emit(GetTaskLoadingState());
     currentTasksBox = await Hive.openBox<TaskCardModel>('All');
+    print(currentTasksBox?.keys.toList());
     tasks.addAll(currentTasksBox?.values.toList() as List<TaskCardModel>);
     emit(GetTaskSuccessState());
   }
@@ -31,6 +32,13 @@ class HomePageCubit extends Cubit<HomePageStates> {
     tasks = currentTasksBox?.values.toList() as List<TaskCardModel>;
 
     emit(ChangeTaskTopicState());
+  }
+
+  Future<void> editTask(TaskCardModel task, int index) async {
+    await currentTasksBox?.put(index, task);
+    tasks = currentTasksBox?.values.toList() as List<TaskCardModel>;
+
+    emit(EditTaskSuccessState());
   }
 
   void getTasks() async {
