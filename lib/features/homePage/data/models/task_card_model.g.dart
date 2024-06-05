@@ -19,7 +19,7 @@ class TaskCardModelAdapter extends TypeAdapter<TaskCardModel> {
     return TaskCardModel(
       title: fields[0] as String,
       date: fields[1] as String,
-      status: fields[2] as String,
+      status: fields[2] as int,
     );
   }
 

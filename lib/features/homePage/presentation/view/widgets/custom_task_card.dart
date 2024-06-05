@@ -3,9 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:todo_list_app/constents.dart';
 
 import '../../../../../cores/utlis/app_fonts.dart';
+import '../../../data/models/task_card_model.dart';
 
 class CustomTaskCard extends StatelessWidget {
-  const CustomTaskCard({super.key});
+  final TaskCardModel taskCardModel;
+
+  const CustomTaskCard({super.key, required this.taskCardModel});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class CustomTaskCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Task Name',
+                  taskCardModel.title,
                   style: AppFonts.textStyle20Bold,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
@@ -38,7 +41,7 @@ class CustomTaskCard extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  'Due Date: Mon. 21/3/2024',
+                  'Due Date: ${taskCardModel.date}',
                   style: AppFonts.textStyle15Regular,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -47,9 +50,13 @@ class CustomTaskCard extends StatelessWidget {
             ),
           ),
           CircleAvatar(
-            backgroundColor: mainColor.withOpacity(.1),
+            backgroundColor: taskCardModel.status == 0
+                ? mainColor.withOpacity(.1)
+                : mainColor,
             child: FaIcon(FontAwesomeIcons.check,
-                color: mainColor.withOpacity(.5)),
+                color: taskCardModel.status == 0
+                    ? mainColor.withOpacity(.5)
+                    : Colors.white),
           )
         ],
       ),

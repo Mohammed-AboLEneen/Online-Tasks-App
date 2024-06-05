@@ -9,7 +9,7 @@ class TaskCardModel extends HiveObject {
   @HiveField(1)
   final String date;
   @HiveField(2)
-  final String status;
+  final int status;
 
   TaskCardModel({
     required this.title,

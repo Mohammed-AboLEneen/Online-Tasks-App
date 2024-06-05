@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/widgets/create_task_bottom_widget.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/widgets/custom_task_card.dart';
+import 'package:todo_list_app/features/homePage/presentation/view/widgets/tasks_listview.dart';
 import '../../../../cores/utlis/app_fonts.dart';
 import '../../../../cores/widgets/segment_button.dart';
 import '../manager/home_page_cubit/home_page_cubit.dart';
@@ -13,7 +14,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => HomePageCubit(),
+        create: (context) => HomePageCubit()..initCurrentTasksBox(),
         child: BlocConsumer<HomePageCubit, HomePageStates>(
             listener: (context, state) {},
             builder: (context, state) {
@@ -39,9 +40,16 @@ class HomePage extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      const CustomTaskCard(),
-                      const Spacer(),
-                      const CreateTaskButtonWidget()
+                      TasksListview(
+                        tasks: homePageCubit.tasks,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5),
+                        child: CreateTaskButtonWidget(
+                          topicBox: homePageCubit
+                              .topics[homePageCubit.currentTopicIndex],
+                        ),
+                      )
                     ],
                   ),
                 )),
