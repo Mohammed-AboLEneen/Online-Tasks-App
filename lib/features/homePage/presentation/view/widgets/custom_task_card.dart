@@ -27,8 +27,6 @@ class _CustomTaskCardState extends State<CustomTaskCard> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'status123 : ${widget.taskCardModel.status}, title : ${widget.taskCardModel.title}');
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
