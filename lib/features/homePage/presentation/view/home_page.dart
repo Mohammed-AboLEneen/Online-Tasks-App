@@ -52,16 +52,13 @@ class HomePage extends StatelessWidget {
                           homePageCubit.tasks.isNotEmpty)
                         TasksListview(
                           tasks: homePageCubit.tasks,
-                          topicBox: homePageCubit
-                              .topics[homePageCubit.currentTopicIndex],
+                          tasksLen: homePageCubit.allTasksCount,
                         ),
                       Padding(
                         padding: const EdgeInsets.only(top: 5),
                         child: CreateTaskButtonWidget(
-                          topicBox: homePageCubit
-                              .topics[homePageCubit.currentTopicIndex],
-                        ),
-                      )
+                            tasksLength: homePageCubit.allTasksCount),
+                      ),
                     ],
                   ),
                 )),

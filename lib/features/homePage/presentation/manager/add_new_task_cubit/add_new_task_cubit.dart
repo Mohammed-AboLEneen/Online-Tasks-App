@@ -11,16 +11,27 @@ class AddNewTaskCubit extends Cubit<AddNewTaskStates> {
 
   Box? currentTasksBox;
 
-  List<String> topics = ['All', 'Not Done', 'Done'];
-  int currentTopicIndex = 0;
-
-  void initCurrentTasksBox(String topicBox) async {
-    currentTasksBox = await Hive.openBox<TaskCardModel>(topicBox);
+  void initCurrentTasksBox() async {
+    currentTasksBox = Hive.box<TaskCardModel>('All');
   }
 
   Future<void> addTask(TaskCardModel task) async {
     emit(AddNewTaskLoadingState());
-    int? index = await currentTasksBox?.add(task);
+
+    Box box1 = Hive.box<TaskCardModel>('Not Done');
+
+    TaskCardModel newTask = TaskCardModel(
+        title: task.title,
+        date: task.date,
+        status: task.status,
+        index: task.index,
+        createTime: DateTime.now().toString());
+
+    await currentTasksBox?.put(task.index, newTask);
+    await box1.put(task.index, task);
+
+    print(box1.get(task.index).title);
+
     emit(AddNewTaskSuccessState());
   }
 }

@@ -10,23 +10,21 @@ class EditTaskCubit extends Cubit<EditTaskStates> {
   static EditTaskCubit get(context) => BlocProvider.of(context);
 
   Box? currentTasksBox;
-  String topicBox = 'All';
 
-  void initCurrentTasksBox(String topicBox) async {
-    print('edit task box : $topicBox');
-    this.topicBox = topicBox;
-    currentTasksBox = await Hive.openBox<TaskCardModel>(topicBox);
+  void initCurrentTasksBox() async {
+    currentTasksBox = await Hive.openBox<TaskCardModel>('All');
   }
 
-  Future<void> editTask(
-      {required TaskCardModel task, required int index}) async {
-    currentTasksBox ??= await Hive.openBox<TaskCardModel>(topicBox);
-    await currentTasksBox?.putAt(index, task);
+  Future<void> editTask({
+    required TaskCardModel task,
+  }) async {
+    currentTasksBox ??= await Hive.openBox<TaskCardModel>('All');
+    await currentTasksBox?.putAt(task.index, task);
     emit(EditTaskSuccessState());
   }
 
   Future<void> deleteTask({required int index}) async {
-    currentTasksBox ??= await Hive.openBox<TaskCardModel>(topicBox);
+    currentTasksBox ??= await Hive.openBox<TaskCardModel>('All');
     await currentTasksBox?.deleteAt(index);
     emit(EditTaskSuccessState());
   }

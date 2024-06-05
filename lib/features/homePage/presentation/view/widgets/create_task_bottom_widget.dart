@@ -13,11 +13,11 @@ import '../../manager/home_page_cubit/home_page_cubit.dart';
 import 'custom_task_widget.dart';
 
 class CreateTaskButtonWidget extends StatelessWidget {
-  final String topicBox;
+  final int tasksLength;
 
   const CreateTaskButtonWidget({
     super.key,
-    required this.topicBox,
+    required this.tasksLength,
   });
 
   @override
@@ -36,14 +36,14 @@ class CreateTaskButtonWidget extends StatelessWidget {
             isScrollControlled: true,
             builder: (BuildContext context) {
               return BlocProvider(
-                  create: (context) =>
-                      AddNewTaskCubit()..initCurrentTasksBox(topicBox),
-                  child: const CustomContentTaskWidget(
+                  create: (context) => AddNewTaskCubit()..initCurrentTasksBox(),
+                  child: CustomContentTaskWidget(
                     isEdit: false,
+                    index: tasksLength,
                   ));
             },
-          ).then((value) {
-            if (value != null) {
+          ).then((task) {
+            if (task != null) {
               BlocProvider.of<HomePageCubit>(context).getTasks();
             }
           });

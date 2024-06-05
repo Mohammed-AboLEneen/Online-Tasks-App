@@ -15,10 +15,10 @@ import '../../../data/models/task_card_model.dart';
 class CustomContentTaskWidget extends StatefulWidget {
   final TaskCardModel? task;
   final bool isEdit;
-  final int? index;
+  final int index;
 
   const CustomContentTaskWidget(
-      {super.key, this.task, required this.isEdit, this.index});
+      {super.key, this.task, required this.isEdit, required this.index});
 
   @override
   State<CustomContentTaskWidget> createState() =>
@@ -137,23 +137,30 @@ class _CustomContentTaskWidgetState extends State<CustomContentTaskWidget> {
                     return;
                   }
 
+                  TaskCardModel task = TaskCardModel(
+                      title: titleController.text,
+                      date: dateController.text,
+                      status: widget.task?.status ?? 0,
+                      createTime:
+                          widget.task?.createTime ?? DateTime.now().toString(),
+                      index: widget.isEdit
+                          ? widget.task?.index ?? 0
+                          : widget.index);
+
                   if (widget.isEdit) {
                     await BlocProvider.of<EditTaskCubit>(context).editTask(
-                        task: TaskCardModel(
-                            title: titleController.text,
-                            date: dateController.text,
-                            status: 0),
-                        index: widget.index!);
-                  } else {
-                    await BlocProvider.of<AddNewTaskCubit>(context).addTask(
-                        TaskCardModel(
-                            title: titleController.text,
-                            date: dateController.text,
-                            status: 0));
-                  }
+                      task: task,
+                    );
 
-                  if (!context.mounted) return;
-                  Navigator.pop(context, 'refresh');
+                    if (!context.mounted) return;
+                    Navigator.pop(context, 'refresh');
+                  } else {
+                    await BlocProvider.of<AddNewTaskCubit>(context)
+                        .addTask(task);
+
+                    if (!context.mounted) return;
+                    Navigator.pop(context, task);
+                  }
                 },
               ),
             ),
@@ -169,7 +176,7 @@ class _CustomContentTaskWidgetState extends State<CustomContentTaskWidget> {
                   buttonColor: Colors.red.withOpacity(.8),
                   onPressed: () async {
                     await BlocProvider.of<EditTaskCubit>(context)
-                        .deleteTask(index: widget.index!);
+                        .deleteTask(index: widget.task?.index ?? 0);
 
                     if (!context.mounted) return;
                     Navigator.pop(context, 'refresh');

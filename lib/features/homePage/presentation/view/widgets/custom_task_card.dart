@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:todo_list_app/constents.dart';
 
 import '../../../../../cores/utlis/app_fonts.dart';
 import '../../../data/models/task_card_model.dart';
+import '../../manager/home_page_cubit/home_page_cubit.dart';
 
-class CustomTaskCard extends StatelessWidget {
+class CustomTaskCard extends StatefulWidget {
   final TaskCardModel taskCardModel;
 
   const CustomTaskCard({super.key, required this.taskCardModel});
 
   @override
+  State<CustomTaskCard> createState() => _CustomTaskCardState();
+}
+
+class _CustomTaskCardState extends State<CustomTaskCard> {
+  late bool status;
+
+  @override
+  void initState() {
+    super.initState();
+    status = widget.taskCardModel.status == 1 ? true : false;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print(
+        'status123 : ${widget.taskCardModel.status}, title : ${widget.taskCardModel.title}');
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -32,7 +49,7 @@ class CustomTaskCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  taskCardModel.title,
+                  widget.taskCardModel.title,
                   style: AppFonts.textStyle20Bold,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
@@ -41,7 +58,7 @@ class CustomTaskCard extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  'Due Date: ${taskCardModel.date}',
+                  'Due Date: ${widget.taskCardModel.date}',
                   style: AppFonts.textStyle15Regular,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
@@ -49,14 +66,25 @@ class CustomTaskCard extends StatelessWidget {
               ],
             ),
           ),
-          CircleAvatar(
-            backgroundColor: taskCardModel.status == 0
-                ? mainColor.withOpacity(.1)
-                : mainColor,
-            child: FaIcon(FontAwesomeIcons.check,
-                color: taskCardModel.status == 0
-                    ? mainColor.withOpacity(.5)
-                    : Colors.white),
+          GestureDetector(
+            onTap: () {
+              BlocProvider.of<HomePageCubit>(context)
+                  .changeTaskStatus(widget.taskCardModel)
+                  .then((value) {
+                setState(() {
+                  status = !status;
+                });
+              });
+            },
+            child: CircleAvatar(
+              backgroundColor: widget.taskCardModel.status == 1
+                  ? mainColor
+                  : mainColor.withOpacity(.1),
+              child: FaIcon(FontAwesomeIcons.check,
+                  color: widget.taskCardModel.status == 1
+                      ? Colors.white
+                      : mainColor.withOpacity(.5)),
+            ),
           )
         ],
       ),
