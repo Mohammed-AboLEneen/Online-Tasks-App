@@ -10,7 +10,7 @@ import '../../../../../cores/methods/show_date_picker.dart';
 import '../../../../../cores/utlis/app_fonts.dart';
 import '../../../../../cores/widgets/custom_textbutton.dart';
 import '../../../../../cores/widgets/custom_textfield_rounded_border.dart';
-import '../../../data/models/task_card_model.dart';
+import '../../../data/models/task_card_model/task_card_model.dart';
 
 class CustomContentTaskWidget extends StatefulWidget {
   final TaskCardModel? task;

@@ -1,12 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todo_list_app/features/homePage/data/models/task_card_model.dart';
+import 'package:hive/hive.dart';
+import 'package:todo_list_app/features/homePage/data/models/change_task_model/change_task_model.dart';
+import 'package:todo_list_app/features/homePage/data/models/task_card_model/task_card_model.dart';
 
 import '../../../../constents.dart';
+import '../../../../cores/methods/check_internet_status.dart';
 
 class HomePageRemoteSource {
   var collection = FirebaseFirestore.instance.collection('users');
 
   Future<void> addNewTask({required TaskCardModel task}) async {
+    bool statusOfInternet = await checkInternetStatus();
+
+    if (statusOfInternet == false) {
+      Box box1 = Hive.box<ChangeTaskModel>('changes');
+
+      box1.add(ChangeTaskModel(task: task, change: 'add'));
+      return;
+    }
+
     Map<String, dynamic> data = task.toJson();
 
     collection.doc(uId).collection('All').add(data);

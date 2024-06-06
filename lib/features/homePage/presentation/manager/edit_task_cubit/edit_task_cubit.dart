@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 
-import '../../../data/models/task_card_model.dart';
+import '../../../data/models/task_card_model/task_card_model.dart';
 import '../../../data/repo/home_repo_imp.dart';
 import 'edit_task_states.dart';
 

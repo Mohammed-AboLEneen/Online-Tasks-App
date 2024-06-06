@@ -1,12 +1,14 @@
 import 'package:hive/hive.dart';
 
-import '../models/task_card_model.dart';
+import '../models/change_task_model/change_task_model.dart';
+import '../models/task_card_model/task_card_model.dart';
 
 class HomeLocalSource {
   Future<void> initCurrentTasksBox() async {
     await Hive.openBox<TaskCardModel>('Not Done');
     await Hive.openBox<TaskCardModel>('Done');
     await Hive.openBox<TaskCardModel>('All');
+    await Hive.openBox<ChangeTaskModel>('changes');
   }
 
   List<TaskCardModel> getTasks({required String topic}) {

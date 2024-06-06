@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_app/constents.dart';
 
 import '../../../../../cores/utlis/app_fonts.dart';
-import '../../../data/models/task_card_model.dart';
+import '../../../data/models/task_card_model/task_card_model.dart';
 import '../../manager/edit_task_cubit/edit_task_cubit.dart';
 import '../../manager/home_page_cubit/home_page_cubit.dart';
 import '../../manager/home_page_cubit/home_page_states.dart';

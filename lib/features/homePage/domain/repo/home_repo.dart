@@ -1,4 +1,4 @@
-import 'package:todo_list_app/features/homePage/data/models/task_card_model.dart';
+import 'package:todo_list_app/features/homePage/data/models/task_card_model/task_card_model.dart';
 
 abstract class HomeRepo {
   Future<void> initAllBoxes();

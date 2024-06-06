@@ -1,4 +1,4 @@
-import 'package:todo_list_app/features/homePage/data/models/task_card_model.dart';
+import 'package:todo_list_app/features/homePage/data/models/task_card_model/task_card_model.dart';
 import 'package:todo_list_app/features/homePage/data/sources/remote_source.dart';
 import 'package:todo_list_app/features/homePage/domain/repo/home_repo.dart';
 
