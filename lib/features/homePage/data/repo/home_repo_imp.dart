@@ -44,4 +44,9 @@ class HomeRepoImp implements HomeRepo {
 
     remoteSource.editTask(task: task);
   }
+
+  @override
+  Future<void> getOnlineTasks() async {
+    await remoteSource.getData();
+  }
 }

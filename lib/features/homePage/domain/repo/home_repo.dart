@@ -3,7 +3,11 @@ import 'package:todo_list_app/features/homePage/data/models/task_card_model/task
 abstract class HomeRepo {
   Future<void> initAllBoxes();
 
+  // get all tasks for each time user open app.
   List<TaskCardModel> getTasks({required String topic});
+
+  // when user open in first time, get all tasks if they exist.
+  Future<void> getOnlineTasks();
 
   Future<void> deleteTask({required TaskCardModel task});
 

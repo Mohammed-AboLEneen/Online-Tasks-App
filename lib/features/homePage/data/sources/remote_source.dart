@@ -29,19 +29,58 @@ class HomePageRemoteSource {
     collection.doc(uId).collection('Not Done').add(data);
   }
 
-  Future<List<TaskCardModel>> getData({required String topic}) async {
+  Future<List<TaskCardModel>> getData() async {
     // Get docs from collection reference
     QuerySnapshot querySnapshot =
-        await collection.doc(uId).collection(topic).get();
+        await collection.doc(uId).collection('All').get();
 
     // Get data from docs and convert map to List
-    List<TaskCardModel> allData = querySnapshot.docs
-        .map((doc) => TaskCardModel.fromJson(
-              doc.data() as Map<String, dynamic>,
-            ))
-        .toList();
+    List<TaskCardModel> allData = querySnapshot.docs.isEmpty
+        ? []
+        : querySnapshot.docs
+            .map((doc) => TaskCardModel.fromJson(
+                  doc.data() as Map<String, dynamic>,
+                ))
+            .toList();
 
-    print(allData);
+    Box box1 = Hive.box<TaskCardModel>('All');
+    for (TaskCardModel task in allData) {
+      box1.put(task.key, task);
+    }
+
+    QuerySnapshot querySnapshot2 =
+        await collection.doc(uId).collection('Done').get();
+
+    // Get data from docs and convert map to List
+    List<TaskCardModel> doneData = querySnapshot2.docs.isEmpty
+        ? []
+        : querySnapshot2.docs
+            .map((doc) => TaskCardModel.fromJson(
+                  doc.data() as Map<String, dynamic>,
+                ))
+            .toList();
+
+    Box box2 = Hive.box<TaskCardModel>('Done');
+    for (TaskCardModel task in allData) {
+      box2.put(task.key, task);
+    }
+
+    QuerySnapshot querySnapshot3 =
+        await collection.doc(uId).collection('Not Done').get();
+
+    // Get data from docs and convert map to List
+    List<TaskCardModel> notDoneData = querySnapshot3.docs.isEmpty
+        ? []
+        : querySnapshot3.docs
+            .map((doc) => TaskCardModel.fromJson(
+                  doc.data() as Map<String, dynamic>,
+                ))
+            .toList();
+
+    Box box3 = Hive.box<TaskCardModel>('Not Done');
+    for (TaskCardModel task in allData) {
+      box3.put(task.key, task);
+    }
 
     return allData;
   }
