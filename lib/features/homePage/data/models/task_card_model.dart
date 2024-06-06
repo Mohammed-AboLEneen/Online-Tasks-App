@@ -5,15 +5,15 @@ part 'task_card_model.g.dart';
 @HiveType(typeId: 0)
 class TaskCardModel extends HiveObject {
   @HiveField(0)
-  final String title;
+  late final String title;
   @HiveField(1)
-  final String date;
+  late final String date;
   @HiveField(2)
-  final int status;
+  late final int status;
   @HiveField(3)
-  final int index;
+  late final int index;
   @HiveField(4)
-  final String createTime;
+  late final String createTime;
 
   TaskCardModel({
     required this.title,
@@ -22,6 +22,24 @@ class TaskCardModel extends HiveObject {
     required this.index,
     required this.createTime,
   });
+
+  TaskCardModel.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    date = json['date'];
+    status = json['status'];
+    index = json['index'];
+    createTime = json['createTime'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['title'] = this.title;
+    data['date'] = this.date;
+    data['status'] = this.status;
+    data['index'] = this.index;
+    data['createTime'] = this.createTime;
+    return data;
+  }
 
   TaskCardModel copyWith({
     String? title,
