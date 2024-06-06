@@ -20,15 +20,15 @@ class TaskCardModelAdapter extends TypeAdapter<TaskCardModel> {
       title: fields[0] as String,
       date: fields[1] as String,
       status: fields[2] as int,
-      index: fields[3] as int,
+      key: fields[3] as String,
       createTime: fields[4] as String,
-    );
+    )..change = (fields[5] as List).cast<String>();
   }
 
   @override
   void write(BinaryWriter writer, TaskCardModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -36,9 +36,11 @@ class TaskCardModelAdapter extends TypeAdapter<TaskCardModel> {
       ..writeByte(2)
       ..write(obj.status)
       ..writeByte(3)
-      ..write(obj.index)
+      ..write(obj.key)
       ..writeByte(4)
-      ..write(obj.createTime);
+      ..write(obj.createTime)
+      ..writeByte(5)
+      ..write(obj.change);
   }
 
   @override

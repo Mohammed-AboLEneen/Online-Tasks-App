@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -142,15 +144,17 @@ class _CustomContentTaskWidgetState extends State<CustomContentTaskWidget> {
                     return;
                   }
 
+                  final now = DateTime.now().millisecondsSinceEpoch;
+                  final random = Random();
+
                   TaskCardModel task = TaskCardModel(
                       title: titleController.text,
                       date: dateController.text,
                       status: widget.task?.status ?? 0,
-                      createTime:
-                          widget.task?.createTime ?? DateTime.now().toString(),
-                      index: widget.isEdit
-                          ? widget.task?.index ?? 0
-                          : widget.index);
+                      createTime: widget.task?.createTime ?? now.toString(),
+                      key: widget.isEdit
+                          ? widget.task?.key ?? '$now-${random.nextInt(10000)}'
+                          : '$now-${random.nextInt(10000)}');
 
                   if (widget.isEdit) {
                     await BlocProvider.of<EditTaskCubit>(context).editTask(
@@ -180,9 +184,8 @@ class _CustomContentTaskWidgetState extends State<CustomContentTaskWidget> {
                   textSize: 18,
                   buttonColor: Colors.red.withOpacity(.8),
                   onPressed: () async {
-                    await BlocProvider.of<EditTaskCubit>(context).deleteTask(
-                        index: widget.task?.index ?? 0,
-                        status: widget.task?.status ?? 0);
+                    await BlocProvider.of<EditTaskCubit>(context)
+                        .deleteTask(task: widget.task!);
 
                     if (!context.mounted) return;
                     Navigator.pop(context, 'refresh');

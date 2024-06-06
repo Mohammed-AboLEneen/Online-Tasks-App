@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_list_app/constents.dart';
-import 'package:todo_list_app/features/homePage/data/models/change_task_model/change_task_model.dart';
 
 import 'cores/utlis/shared_pre_helper.dart';
 import 'features/homePage/data/models/task_card_model/task_card_model.dart';
@@ -15,7 +14,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(TaskCardModelAdapter()); // Register adapter
-  Hive.registerAdapter(ChangeTaskModelAdapter()); // Register adapter
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await SharedPreferenceHelper.initSharedPreference();
 

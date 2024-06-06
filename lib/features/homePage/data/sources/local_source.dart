@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 
-import '../models/change_task_model/change_task_model.dart';
 import '../models/task_card_model/task_card_model.dart';
 
 class HomeLocalSource {
@@ -8,18 +7,27 @@ class HomeLocalSource {
     await Hive.openBox<TaskCardModel>('Not Done');
     await Hive.openBox<TaskCardModel>('Done');
     await Hive.openBox<TaskCardModel>('All');
-    await Hive.openBox<ChangeTaskModel>('changes');
+    await Hive.openBox<TaskCardModel>('changes');
   }
 
   List<TaskCardModel> getTasks({required String topic}) {
     List<TaskCardModel> tasks = [];
 
     if (topic == 'All') {
-      tasks = Hive.box<TaskCardModel>('All').values.toList();
+      tasks = Hive
+          .box<TaskCardModel>('All')
+          .values
+          .toList();
     } else if (topic == 'Not Done') {
-      tasks = Hive.box<TaskCardModel>('Not Done').values.toList();
+      tasks = Hive
+          .box<TaskCardModel>('Not Done')
+          .values
+          .toList();
     } else if (topic == 'Done') {
-      tasks = Hive.box<TaskCardModel>('Done').values.toList();
+      tasks = Hive
+          .box<TaskCardModel>('Done')
+          .values
+          .toList();
     }
 
     return tasks;
@@ -33,24 +41,24 @@ class HomeLocalSource {
         title: task.title,
         date: task.date,
         status: task.status,
-        index: task.index,
+        key: task.key,
         createTime: task.createTime);
-    await box2.put(task.index, task);
-    await box1.put(task.index, newTask);
+    await box2.put(task.key, task);
+    await box1.put(task.key, newTask);
   }
 
-  Future<void> deleteTask({required int key, required int status}) async {
+  Future<void> deleteTask({required TaskCardModel task}) async {
     Box box1 = await Hive.openBox<TaskCardModel>('All');
 
     Box? box2;
-    if (status == 1) {
+    if (task.status == 1) {
       box2 = await Hive.openBox<TaskCardModel>('Done');
     } else {
       box2 = await Hive.openBox<TaskCardModel>('Not Done');
     }
 
-    await box1.delete(key);
-    await box2.delete(key);
+    await box1.delete(task.key);
+    await box2.delete(task.key);
   }
 
   Future<void> changeTaskStatus({required TaskCardModel task}) async {
@@ -65,13 +73,13 @@ class HomeLocalSource {
     Box box2 = Hive.box<TaskCardModel>('Not Done');
     Box box3 = Hive.box<TaskCardModel>('Done');
 
-    await box1.put(task.index, task.copyWith(status: newStatus));
+    await box1.put(task.key, task.copyWith(status: newStatus));
     if (newStatus == 1) {
-      await box2.delete(task.index);
-      await box3.put(task.index, task.copyWith(status: 1));
+      await box2.delete(task.key);
+      await box3.put(task.key, task.copyWith(status: 1));
     } else {
-      await box3.delete(task.index);
-      await box2.put(task.index, task.copyWith(status: 0));
+      await box3.delete(task.key);
+      await box2.put(task.key, task.copyWith(status: 0));
     }
   }
 
@@ -80,21 +88,21 @@ class HomeLocalSource {
         title: task.title,
         date: task.date,
         status: task.status,
-        index: task.index,
+        key: task.key,
         createTime: task.createTime);
 
     Box box1 = Hive.box<TaskCardModel>('All');
-    await box1.put(task.index, task);
+    await box1.put(task.key, task);
 
     if (task.status == 0) {
       Box box2 = Hive.box<TaskCardModel>('Not Done');
-      await box2.put(task.index, newTask);
+      await box2.put(task.key, newTask);
     }
 
     if (task.status == 1) {
       Box box3 = Hive.box<TaskCardModel>('Done');
 
-      await box3.put(task.index, newTask);
+      await box3.put(task.key, newTask);
     }
   }
 }

@@ -24,8 +24,8 @@ class EditTaskCubit extends Cubit<EditTaskStates> {
     emit(EditTaskSuccessState());
   }
 
-  Future<void> deleteTask({required int index, required int status}) async {
-    await homeRepoImp.deleteTask(index: index, status: status);
+  Future<void> deleteTask({required TaskCardModel task}) async {
+    await homeRepoImp.deleteTask(task: task);
     emit(EditTaskSuccessState());
   }
 }

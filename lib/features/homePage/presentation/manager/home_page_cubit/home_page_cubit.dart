@@ -26,7 +26,7 @@ class HomePageCubit extends Cubit<HomePageStates> {
     tasks.addAll(homeRepoImp.getTasks(topic: topics[currentTopicIndex]));
     allTasksCount = tasks.length;
 
-    tasks.forEach((e) => print('task: ${e.title}, key: ${e.index}'));
+    tasks.forEach((e) => print('task: ${e.title}, key: ${e.key}'));
     print('all tasks count: ${allTasksCount}');
 
     emit(GetTaskSuccessState());
@@ -47,7 +47,7 @@ class HomePageCubit extends Cubit<HomePageStates> {
   void getTasks() async {
     tasks = homeRepoImp.getTasks(topic: topics[currentTopicIndex]);
 
-    tasks.forEach((e) => print('task: ${e.title}, key: ${e.index}'));
+    tasks.forEach((e) => print('task: ${e.title}, key: ${e.key}'));
     if (currentTopicIndex == 0) {
       allTasksCount = tasks.length;
     }

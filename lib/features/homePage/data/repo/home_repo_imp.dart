@@ -15,16 +15,10 @@ class HomeRepoImp implements HomeRepo {
   }
 
   @override
-  Future<void> deleteTask({required int index, required int status}) async {
-    await localSource.deleteTask(
-      key: index,
-      status: status,
-    );
+  Future<void> deleteTask({required TaskCardModel task}) async {
+    await localSource.deleteTask(task: task);
 
-    remoteSource.deleteTask(
-      key: index,
-      status: status,
-    );
+    remoteSource.deleteTask(task: task);
   }
 
   @override

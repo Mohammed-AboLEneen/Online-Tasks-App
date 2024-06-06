@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
-import 'package:todo_list_app/features/homePage/data/models/change_task_model/change_task_model.dart';
 import 'package:todo_list_app/features/homePage/data/models/task_card_model/task_card_model.dart';
 
 import '../../../../constents.dart';
@@ -13,9 +12,14 @@ class HomePageRemoteSource {
     bool statusOfInternet = await checkInternetStatus();
 
     if (statusOfInternet == false) {
-      Box box1 = Hive.box<ChangeTaskModel>('changes');
+      Box box1 = Hive.box<TaskCardModel>('changes');
+      var changedTask = task.copyWith();
+      changedTask.change[0] = 'add';
+      await box1.put(task.key, changedTask);
 
-      box1.add(ChangeTaskModel(task: task, change: 'add'));
+      box1.values.toList().forEach((element) {
+        print('key: ${element.title}, change: ${element.change}');
+      });
       return;
     }
 
@@ -42,38 +46,111 @@ class HomePageRemoteSource {
     return allData;
   }
 
-  Future<void> deleteTask({required int key, required int status}) async {
+  Future<void> deleteTask({required TaskCardModel task}) async {
+    bool statusOfInternet = await checkInternetStatus();
+    if (statusOfInternet == false) {
+      Box box1 = Hive.box<TaskCardModel>('changes');
+
+      if (box1.containsKey(task.key)) {
+        var changedTask = box1.get(task.key);
+        changedTask.change?[3] = 'delete';
+
+        changedTask = changedTask.copyWith(
+            change: changedTask.change,
+            createTime: task.createTime,
+            title: task.title,
+            date: task.date,
+            status: task.status);
+
+        print('key: ${changedTask.key} change: ${changedTask.change}');
+        await box1.put(
+            task.key, changedTask.copyWith(change: changedTask.change));
+      } else {
+        task.change[3] = 'delete';
+        await box1.put(task.key, task.copyWith());
+      }
+      box1.values.toList().forEach((element) {
+        print('key: ${element.title}, change: ${element.change}');
+      });
+      return;
+    }
+
     var snapshotAll = await collection
         .doc(uId)
         .collection('All')
-        .where('index', isEqualTo: key)
+        .where('key', isEqualTo: task.key)
+        .limit(1)
         .get();
 
     var snapshot = await collection
         .doc(uId)
-        .collection(status == 1 ? 'Done' : 'Not Done')
-        .where('index', isEqualTo: key)
+        .collection(task.status == 1 ? 'Done' : 'Not Done')
+        .where('key', isEqualTo: task.key)
+        .limit(1)
         .get();
+    print('snapshotAll.docs[0].id: ${snapshotAll.docs[0].id}');
 
     if (snapshotAll.docs.isNotEmpty) {
-      snapshotAll.docs.first.reference.delete();
+      print('snapshotAll.docs[0].id: ${snapshotAll.docs[0].id}');
+      collection
+          .doc(uId)
+          .collection('All')
+          .doc(snapshotAll.docs[0].id)
+          .delete();
     }
 
     if (snapshot.docs.isNotEmpty) {
-      snapshot.docs.first.reference.delete();
+      print('snapshot.docs[0].id: ${snapshotAll.docs[0].id}');
+
+      collection
+          .doc(uId)
+          .collection(task.status == 1 ? 'Done' : 'Not Done')
+          .doc(snapshotAll.docs[0].id)
+          .delete();
     }
   }
 
   Future<void> editTask({required TaskCardModel task}) async {
+    bool statusOfInternet = await checkInternetStatus();
+    print('statusOfInternet: ${statusOfInternet}');
+    if (statusOfInternet == false) {
+      Box box1 = Hive.box<TaskCardModel>('changes');
+
+      // print('task: ${t.title}, key: ${t.key} change: ${t.change}');
+      if (box1.containsKey(task.key)) {
+        var changedTask = box1.get(task.key);
+        changedTask.change?[1] = 'edit';
+        changedTask = changedTask.copyWith(
+            change: changedTask.change,
+            createTime: task.createTime,
+            title: task.title,
+            date: task.date,
+            status: task.status);
+
+        print('key: ${changedTask.key} change: ${changedTask.change}');
+        await box1.put(
+            task.key, changedTask.copyWith(change: changedTask.change));
+      } else {
+        var changedTask = task.copyWith();
+        changedTask.change[1] = 'edit';
+        await box1.put(task.key, changedTask);
+      }
+
+      box1.values.toList().forEach((element) {
+        print('key: ${element.title}, change: ${element.change}');
+      });
+      return;
+    }
+
     var snapshotAll = await collection
         .doc(uId)
         .collection('All')
-        .where('index', isEqualTo: task.index)
+        .where('key', isEqualTo: task.key)
         .get();
     var snapshot = await collection
         .doc(uId)
         .collection(task.status == 1 ? 'Done' : 'Not Done')
-        .where('index', isEqualTo: task.index)
+        .where('key', isEqualTo: task.key)
         .get();
 
     if (snapshotAll.docs.isNotEmpty) {
@@ -88,49 +165,108 @@ class HomePageRemoteSource {
   Future<void> changeTaskStatus({
     required TaskCardModel task,
   }) async {
+    // this condition will be applied only if there is task status is already in the box and converted.
+    int newStatus = task.status;
+    if (task.change[2] != 'status') {
+      if (task.status == 1) {
+        newStatus = 0;
+      } else {
+        newStatus = 1;
+      }
+    }
+    bool statusOfInternet = await checkInternetStatus();
+    if (statusOfInternet == false) {
+      Box box1 = Hive.box<TaskCardModel>('changes');
+
+      if (box1.containsKey(task.key)) {
+        TaskCardModel changedTask = box1.get(task.key);
+        changedTask.change[2] = 'status';
+
+        changedTask = changedTask.copyWith(
+            change: changedTask.change,
+            createTime: task.createTime,
+            title: task.title,
+            date: task.date,
+            status: newStatus);
+
+        print('key: ${changedTask.key} change: ${changedTask.change}');
+        await box1.put(
+            task.key, changedTask.copyWith(change: changedTask.change));
+      } else {
+        var changedTask = task.copyWith();
+        changedTask.change[2] = 'status';
+
+        changedTask = changedTask.copyWith(
+            change: changedTask.change,
+            createTime: task.createTime,
+            title: task.title,
+            date: task.date,
+            status: newStatus);
+        await box1.put(task.key, changedTask);
+      }
+      box1.values.toList().forEach((element) {
+        print('key: ${element.title}, change: ${element.change}');
+      });
+      return;
+    }
+
     var snapshotAll = await collection
         .doc(uId)
         .collection('All')
-        .where('index', isEqualTo: task.index)
+        .where('key', isEqualTo: task.key)
+        .limit(1)
         .get();
+
     var snapshotNotDone = await collection
         .doc(uId)
         .collection('Not Done')
-        .where('index', isEqualTo: task.index)
+        .where('key', isEqualTo: task.key)
+        .limit(1)
         .get();
 
     var snapshotDone = await collection
         .doc(uId)
         .collection('Done')
-        .where('index', isEqualTo: task.index)
+        .where('key', isEqualTo: task.key)
+        .limit(1)
         .get();
 
-    snapshotAll.docs.first.reference.update(task.toJson());
+    collection
+        .doc(uId)
+        .collection('All')
+        .doc(snapshotAll.docs[0].id)
+        .update(task.copyWith(status: newStatus).toJson());
 
-    int newStatus = 0;
-    if (task.status == 1) {
-      newStatus = 0;
-    } else {
-      newStatus = 1;
-    }
-
+    print('newStatus: ${newStatus}');
     if (newStatus == 1) {
-      collection
-          .doc(uId)
-          .collection('Done')
-          .add(task.copyWith(status: newStatus).toJson());
+      if (snapshotDone.docs.isEmpty) {
+        collection
+            .doc(uId)
+            .collection('Done')
+            .add(task.copyWith(status: newStatus).toJson());
+      }
 
       if (snapshotNotDone.docs.isNotEmpty) {
-        snapshotNotDone.docs.first.reference.delete();
+        collection
+            .doc(uId)
+            .collection('Not Done')
+            .doc(snapshotNotDone.docs[0].id)
+            .delete();
       }
     } else {
-      collection
-          .doc(uId)
-          .collection('Not Done')
-          .add(task.copyWith(status: newStatus).toJson());
+      if (snapshotNotDone.docs.isEmpty) {
+        collection
+            .doc(uId)
+            .collection('Not Done')
+            .add(task.copyWith(status: newStatus).toJson());
+      }
 
       if (snapshotDone.docs.isNotEmpty) {
-        snapshotDone.docs.first.reference.delete();
+        collection
+            .doc(uId)
+            .collection('Done')
+            .doc(snapshotDone.docs[0].id)
+            .delete();
       }
     }
   }

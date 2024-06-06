@@ -5,7 +5,7 @@ abstract class HomeRepo {
 
   List<TaskCardModel> getTasks({required String topic});
 
-  Future<void> deleteTask({required int index, required int status});
+  Future<void> deleteTask({required TaskCardModel task});
 
   Future<void> addNewTask({required TaskCardModel task});
 
