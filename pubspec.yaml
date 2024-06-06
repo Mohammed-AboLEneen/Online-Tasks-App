@@ -48,6 +48,8 @@ dependencies:
   flutter_svg: ^2.0.10+1
   fluttertoast: ^8.2.6
   shared_preferences: ^2.2.3
+  connectivity_plus: ^6.0.3
+  http: ^1.2.1
 
 
 

@@ -8,6 +8,7 @@ import 'features/homePage/data/models/task_card_model.dart';
 import 'features/homePage/presentation/view/home_page.dart';
 import 'features/login/presentation/view/login.dart';
 import 'firebase_options.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
