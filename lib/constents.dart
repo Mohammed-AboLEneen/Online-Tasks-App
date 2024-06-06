@@ -8,4 +8,4 @@ Color focusTextFormFieldColorBorder = mainColor.withOpacity(
   .9,
 );
 Color mainLoadingIndicatorColor = const Color(0xff5FCCA4);
-String token = '';
+String uId = '';

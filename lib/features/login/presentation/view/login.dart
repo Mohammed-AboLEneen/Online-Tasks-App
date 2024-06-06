@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:todo_list_app/constents.dart';
+import 'package:todo_list_app/cores/utlis/shared_pre_helper.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/home_page.dart';
 
 import 'package:todo_list_app/features/login/presentation/view/widgets/custom_top_clipper.dart';
@@ -47,6 +48,8 @@ class _LoginScreenState extends State<LoginScreen>
           showToast(
               msg: 'Login Success',
               toastMessageType: ToastMessageType.successMessage);
+
+          SharedPreferenceHelper.setString(key: 'id', value: uId);
 
           Navigator.push(context, PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) {
