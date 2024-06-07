@@ -4,30 +4,27 @@ import '../models/task_card_model/task_card_model.dart';
 
 class HomeLocalSource {
   Future<void> initCurrentTasksBox() async {
+    print('Not Done ${await Hive.boxExists('Not Done')}');
+    print('Done ${await Hive.boxExists('Done')}');
+    print('All ${await Hive.boxExists('All')}');
+
     await Hive.openBox<TaskCardModel>('Not Done');
     await Hive.openBox<TaskCardModel>('Done');
     await Hive.openBox<TaskCardModel>('All');
     await Hive.openBox<TaskCardModel>('changes');
+
+    print('init current tasks box');
   }
 
   List<TaskCardModel> getTasks({required String topic}) {
     List<TaskCardModel> tasks = [];
 
     if (topic == 'All') {
-      tasks = Hive
-          .box<TaskCardModel>('All')
-          .values
-          .toList();
+      tasks = Hive.box<TaskCardModel>('All').values.toList();
     } else if (topic == 'Not Done') {
-      tasks = Hive
-          .box<TaskCardModel>('Not Done')
-          .values
-          .toList();
+      tasks = Hive.box<TaskCardModel>('Not Done').values.toList();
     } else if (topic == 'Done') {
-      tasks = Hive
-          .box<TaskCardModel>('Done')
-          .values
-          .toList();
+      tasks = Hive.box<TaskCardModel>('Done').values.toList();
     }
 
     return tasks;

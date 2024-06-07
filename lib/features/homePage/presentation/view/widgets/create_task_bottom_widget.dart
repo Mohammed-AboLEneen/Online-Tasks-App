@@ -37,13 +37,13 @@ class CreateTaskButtonWidget extends StatelessWidget {
             builder: (BuildContext context) {
               return CustomContentTaskWidget(
                 isEdit: false,
-                index: tasksLength,
                 topic: topic,
               );
             },
           ).then((task) {
             if (task != null) {
-              // BlocProvider.of<HomePageCubit>(context).getTasks();
+              print('ddddddddddddone');
+              BlocProvider.of<HomePageCubit>(context).getTasks();
             }
           });
         },

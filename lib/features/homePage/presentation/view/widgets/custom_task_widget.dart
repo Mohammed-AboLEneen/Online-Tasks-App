@@ -17,15 +17,10 @@ import '../../../data/models/task_card_model/task_card_model.dart';
 class CustomContentTaskWidget extends StatefulWidget {
   final TaskCardModel? task;
   final bool isEdit;
-  final int index;
   final String topic;
 
   const CustomContentTaskWidget(
-      {super.key,
-      this.task,
-      required this.isEdit,
-      required this.index,
-      required this.topic});
+      {super.key, this.task, required this.isEdit, required this.topic});
 
   @override
   State<CustomContentTaskWidget> createState() =>
@@ -157,19 +152,19 @@ class _CustomContentTaskWidgetState extends State<CustomContentTaskWidget> {
                           : '$now-${random.nextInt(10000)}');
 
                   if (widget.isEdit) {
-                    // await BlocProvider.of<EditTaskCubit>(context).editTask(
-                    //   task: task,
-                    // );
+                    await BlocProvider.of<EditTaskCubit>(context).editTask(
+                      task: task,
+                    );
 
                     if (!context.mounted) return;
                     Navigator.pop(context, 'refresh');
                   } else {
                     if (!context.mounted) return;
-                    // await BlocProvider.of<AddNewTaskCubit>(context)
-                    //     .addTask(task);
+                    await BlocProvider.of<AddNewTaskCubit>(context)
+                        .addTask(task);
 
                     if (!context.mounted) return;
-                    Navigator.pop(context, task);
+                    Navigator.pop(context, 'refresh');
                   }
                 },
               ),
@@ -185,8 +180,8 @@ class _CustomContentTaskWidgetState extends State<CustomContentTaskWidget> {
                   textSize: 18,
                   buttonColor: Colors.red.withOpacity(.8),
                   onPressed: () async {
-                    // await BlocProvider.of<EditTaskCubit>(context)
-                    //     .deleteTask(task: widget.task!);
+                    await BlocProvider.of<EditTaskCubit>(context)
+                        .deleteTask(task: widget.task!);
 
                     if (!context.mounted) return;
                     Navigator.pop(context, 'refresh');

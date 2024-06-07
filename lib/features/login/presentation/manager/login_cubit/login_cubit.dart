@@ -13,7 +13,9 @@ class LoginCubit extends Cubit<LoginStates> {
   Future<void> signIn({required String userName}) async {
     emit(LoadingLoginState());
     try {
-      await FirebaseAuth.instance.signIn(userName, '123456');
+      User user = await FirebaseAuth.instance.signIn(userName, '123456');
+
+      uId = user.id;
 
       emit(SuccessLoginState());
     } catch (e) {

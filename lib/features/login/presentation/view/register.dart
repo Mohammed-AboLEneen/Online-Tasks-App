@@ -5,8 +5,7 @@ import 'package:todo_list_app/constents.dart';
 import 'package:todo_list_app/cores/utlis/shared_pre_helper.dart';
 import 'package:todo_list_app/cores/widgets/custom_textbutton.dart';
 import 'package:todo_list_app/cores/widgets/custom_textfield_rounded_border.dart';
-import 'package:todo_list_app/features/homePage/presentation/view/home_page.dart';
-import 'package:todo_list_app/features/homePage/presentation/view/widgets/home_page_desktop.dart';
+import 'package:todo_list_app/features/homePage/presentation/view/home_page_desktop.dart';
 import 'package:todo_list_app/features/login/presentation/manager/register_cubit/register_cubit.dart';
 
 import 'package:todo_list_app/features/login/presentation/view/widgets/custom_top_clipper.dart';
@@ -50,7 +49,7 @@ class _LoginScreenState extends State<RegisterScreen>
       child: BlocConsumer<RegisterCubit, RegisterStates>(
           listener: (context, state) {
         if (state is SuccessRegisterState) {
-          SharedPreferenceHelper.setString(key: 'id', value: uId);
+          SharedPreferenceHelper.setString(key: 'id1', value: uId);
 
           Navigator.push(context, PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) {

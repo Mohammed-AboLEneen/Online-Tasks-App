@@ -46,7 +46,6 @@ class TasksListview extends StatelessWidget {
                               return CustomContentTaskWidget(
                                 isEdit: true,
                                 task: tasks[tasks.length - 1 - index],
-                                index: tasksLen,
                                 topic: topic,
                               );
                             },
