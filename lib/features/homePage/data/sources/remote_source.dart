@@ -51,7 +51,6 @@ class HomePageRemoteSource {
     QuerySnapshot querySnapshot2 =
         await collection.doc(uId).collection('Done').get();
 
-    // Get data from docs and convert map to List
     List<TaskCardModel> doneData = querySnapshot2.docs.isEmpty
         ? []
         : querySnapshot2.docs
@@ -60,8 +59,9 @@ class HomePageRemoteSource {
                 ))
             .toList();
 
+    // Get data from docs and convert map to List
     Box box2 = Hive.box<TaskCardModel>('Done');
-    for (TaskCardModel task in allData) {
+    for (TaskCardModel task in doneData) {
       box2.put(task.key, task);
     }
 
@@ -78,7 +78,7 @@ class HomePageRemoteSource {
             .toList();
 
     Box box3 = Hive.box<TaskCardModel>('Not Done');
-    for (TaskCardModel task in allData) {
+    for (TaskCardModel task in notDoneData) {
       box3.put(task.key, task);
     }
 
@@ -127,10 +127,8 @@ class HomePageRemoteSource {
         .where('key', isEqualTo: task.key)
         .limit(1)
         .get();
-    print('snapshotAll.docs[0].id: ${snapshotAll.docs[0].id}');
 
     if (snapshotAll.docs.isNotEmpty) {
-      print('snapshotAll.docs[0].id: ${snapshotAll.docs[0].id}');
       collection
           .doc(uId)
           .collection('All')
@@ -139,12 +137,10 @@ class HomePageRemoteSource {
     }
 
     if (snapshot.docs.isNotEmpty) {
-      print('snapshot.docs[0].id: ${snapshotAll.docs[0].id}');
-
       collection
           .doc(uId)
           .collection(task.status == 1 ? 'Done' : 'Not Done')
-          .doc(snapshotAll.docs[0].id)
+          .doc(snapshot.docs[0].id)
           .delete();
     }
   }

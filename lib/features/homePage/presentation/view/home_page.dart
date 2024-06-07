@@ -62,59 +62,58 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return BlocProvider(
         create: (context) => HomePageCubit()..initCurrentTasksBox(),
-        child: BlocConsumer<HomePageCubit, HomePageStates>(
-            listener: (context, state) {},
+        child: BlocBuilder<HomePageCubit, HomePageStates>(
             builder: (context, state) {
-              HomePageCubit homePageCubit = HomePageCubit.get(context);
+          HomePageCubit homePageCubit = HomePageCubit.get(context);
 
-              return Scaffold(
-                backgroundColor: Colors.white,
-                body: SafeArea(
-                    child: Padding(
-                  padding: const EdgeInsets.only(
-                      right: 20, left: 20, top: 25, bottom: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Good Morning',
-                        style: AppFonts.textStyle30Medium,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const SegmentButtonList(),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      if (state is GetTaskLoadingState)
-                        Expanded(
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: mainColor,
-                            ),
-                          ),
-                        ),
-                      if (state is! GetTaskLoadingState ||
-                          homePageCubit.tasks.isNotEmpty)
-                        TasksListview(
-                            tasks: homePageCubit.tasks,
-                            tasksLen: homePageCubit.allTasksCount,
-                            topic: homePageCubit
-                                .topics[homePageCubit.currentTopicIndex]),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: CreateTaskButtonWidget(
-                          tasksLength: homePageCubit.allTasksCount,
-                          topic: homePageCubit
-                              .topics[homePageCubit.currentTopicIndex],
-                        ),
-                      ),
-                    ],
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: SafeArea(
+                child: Padding(
+              padding: const EdgeInsets.only(
+                  right: 20, left: 20, top: 25, bottom: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Good Morning',
+                    style: AppFonts.textStyle30Medium,
                   ),
-                )),
-              );
-            }));
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const SegmentButtonList(),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  if (state is GetTaskLoadingState)
+                    Expanded(
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: mainColor,
+                        ),
+                      ),
+                    ),
+                  if (state is! GetTaskLoadingState ||
+                      homePageCubit.tasks.isNotEmpty)
+                    TasksListview(
+                        tasks: homePageCubit.tasks,
+                        tasksLen: homePageCubit.allTasksCount,
+                        topic: homePageCubit
+                            .topics[homePageCubit.currentTopicIndex]),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: CreateTaskButtonWidget(
+                      tasksLength: homePageCubit.allTasksCount,
+                      topic:
+                          homePageCubit.topics[homePageCubit.currentTopicIndex],
+                    ),
+                  ),
+                ],
+              ),
+            )),
+          );
+        }));
   }
 
   Future<void> performTaskChanges(TaskCardModel task) async {

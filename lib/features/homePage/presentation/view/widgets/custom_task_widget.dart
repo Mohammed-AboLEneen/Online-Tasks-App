@@ -164,6 +164,7 @@ class _CustomContentTaskWidgetState extends State<CustomContentTaskWidget> {
                     if (!context.mounted) return;
                     Navigator.pop(context, 'refresh');
                   } else {
+                    if (!context.mounted) return;
                     await BlocProvider.of<AddNewTaskCubit>(context)
                         .addTask(task);
 
@@ -196,5 +197,21 @@ class _CustomContentTaskWidgetState extends State<CustomContentTaskWidget> {
         ),
       ),
     );
+  }
+
+  String parseDateString(String dateString) {
+    final parts = dateString.split('/');
+    if (parts.length < 3 || parts.length > 4) {}
+    // Handle potential day of the week prefix (optional)
+    int dayOfMonth;
+    if (parts[0].contains('.')) {
+      dayOfMonth = int.parse(
+          parts[0].split('.').last); // Extract day after splitting on '.'
+    } else {
+      dayOfMonth = int.parse(parts[0]);
+    }
+    final month = int.parse(parts[1]);
+    final year = int.parse(parts[2]);
+    return DateTime(year, month, dayOfMonth).toIso8601String();
   }
 }
