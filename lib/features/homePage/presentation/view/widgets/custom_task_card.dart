@@ -66,13 +66,13 @@ class _CustomTaskCardState extends State<CustomTaskCard> {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<HomePageCubit>(context)
-                  .changeTaskStatus(widget.taskCardModel)
-                  .then((value) {
-                setState(() {
-                  status = !status;
-                });
-              });
+              // BlocProvider.of<HomePageCubit>(context)
+              //     .changeTaskStatus(widget.taskCardModel)
+              //     .then((value) {
+              //   setState(() {
+              //     status = !status;
+              //   });
+              // });
             },
             child: CircleAvatar(
               backgroundColor: widget.taskCardModel.status == 1

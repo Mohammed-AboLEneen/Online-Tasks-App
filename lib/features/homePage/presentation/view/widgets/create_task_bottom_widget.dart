@@ -35,17 +35,15 @@ class CreateTaskButtonWidget extends StatelessWidget {
             context: context,
             isScrollControlled: true,
             builder: (BuildContext context) {
-              return BlocProvider(
-                  create: (context) => AddNewTaskCubit(),
-                  child: CustomContentTaskWidget(
-                    isEdit: false,
-                    index: tasksLength,
-                    topic: topic,
-                  ));
+              return CustomContentTaskWidget(
+                isEdit: false,
+                index: tasksLength,
+                topic: topic,
+              );
             },
           ).then((task) {
             if (task != null) {
-              BlocProvider.of<HomePageCubit>(context).getTasks();
+              // BlocProvider.of<HomePageCubit>(context).getTasks();
             }
           });
         },

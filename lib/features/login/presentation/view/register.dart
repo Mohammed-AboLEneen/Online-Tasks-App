@@ -6,23 +6,23 @@ import 'package:todo_list_app/cores/utlis/shared_pre_helper.dart';
 import 'package:todo_list_app/cores/widgets/custom_textbutton.dart';
 import 'package:todo_list_app/cores/widgets/custom_textfield_rounded_border.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/home_page.dart';
-import 'package:todo_list_app/features/login/presentation/view/register.dart';
+import 'package:todo_list_app/features/homePage/presentation/view/widgets/home_page_desktop.dart';
+import 'package:todo_list_app/features/login/presentation/manager/register_cubit/register_cubit.dart';
 
 import 'package:todo_list_app/features/login/presentation/view/widgets/custom_top_clipper.dart';
 
 import '../../../../cores/utlis/app_fonts.dart';
 
-import '../manager/login_cubit/login_cubit.dart';
-import '../manager/login_cubit/login_states.dart';
+import '../manager/register_cubit/register_states.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class _LoginScreenState extends State<RegisterScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<Offset> _animation;
@@ -46,18 +46,19 @@ class _LoginScreenState extends State<LoginScreen>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginCubit(),
-      child: BlocConsumer<LoginCubit, LoginStates>(listener: (context, state) {
-        if (state is SuccessLoginState) {
+      create: (context) => RegisterCubit(),
+      child: BlocConsumer<RegisterCubit, RegisterStates>(
+          listener: (context, state) {
+        if (state is SuccessRegisterState) {
           SharedPreferenceHelper.setString(key: 'id', value: uId);
 
           Navigator.push(context, PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) {
-            return const HomePage();
+            return const HomePageDesktop();
           }));
-        } else if (state is FailureLoginState) {}
+        } else if (state is FailureRegisterState) {}
       }, builder: (context, state) {
-        var cubit = LoginCubit.get(context);
+        var cubit = RegisterCubit.get(context);
         return Scaffold(
           body: Form(
             key: _formKey,
@@ -94,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen>
                         child: SlideTransition(
                           position: _animation,
                           child: Text(
-                            'Welcome Back',
+                            'Enter Your New Account User Name',
                             style: AppFonts.textStyle20Bold,
                           ),
                         ),
@@ -123,13 +124,13 @@ class _LoginScreenState extends State<LoginScreen>
                   width: MediaQuery.sizeOf(context).width * .3,
                   height: 45,
                   child: CustomTextButton(
-                    text: 'Login Now',
+                    text: 'Register Now',
                     isTenRounded: true,
                     textColor: Colors.white,
                     buttonColor: mainColor.withOpacity(.8),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        cubit.signIn(userName: _emailController.text);
+                        cubit.signUp(userName: _emailController.text);
                       } else {
                         autovalidateMode = AutovalidateMode.always;
                         setState(() {});
@@ -138,32 +139,22 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 SizedBox(
-                    width: MediaQuery.sizeOf(context).width * .33,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Spacer(),
-                        TextButton(
-                            onPressed: () {},
-                            child: TextButton(
-                                onPressed: () {
-                                  Navigator.push(context, PageRouteBuilder(
-                                      pageBuilder: (context, animation,
-                                          secondaryAnimation) {
-                                    return const RegisterScreen();
-                                  }));
-                                },
-                                child: Text(
-                                  'New User? Sign Up',
-                                  style: AppFonts.textStyle15Regular
-                                      ?.copyWith(color: Colors.blue),
-                                ))),
-                      ],
-                    )),
-                if (state is LoadingLoginState)
+                  width: MediaQuery.sizeOf(context).width * .3,
+                  height: 45,
+                  child: CustomTextButton(
+                    text: 'Back To Login',
+                    isTenRounded: true,
+                    textColor: Colors.black.withOpacity(.7),
+                    buttonColor: Colors.grey.withOpacity(.8),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                if (state is LoadingRegisterState)
                   Container(
                     width: MediaQuery.sizeOf(context).width * .7,
                   ),

@@ -43,15 +43,12 @@ class TasksGridView extends StatelessWidget {
                         context: context,
                         isScrollControlled: true,
                         builder: (BuildContext context) {
-                          return BlocProvider(
-                              create: (context) =>
-                                  EditTaskCubit()..initCurrentTasksBox(),
-                              child: CustomContentTaskWidget(
-                                isEdit: true,
-                                task: tasks[tasks.length - 1 - index],
-                                index: tasksLen,
-                                topic: topic,
-                              ));
+                          return CustomContentTaskWidget(
+                            isEdit: true,
+                            task: tasks[tasks.length - 1 - index],
+                            index: tasksLen,
+                            topic: topic,
+                          );
                         },
                       ).then((value) {
                         if (value != null) {

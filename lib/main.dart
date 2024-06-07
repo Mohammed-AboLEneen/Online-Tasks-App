@@ -1,20 +1,23 @@
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firedart/firedart.dart';
+import 'package:firedart/firestore/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_list_app/constents.dart';
+import 'package:todo_list_app/features/homePage/presentation/view/widgets/home_page_desktop.dart';
 
 import 'cores/utlis/shared_pre_helper.dart';
 import 'features/homePage/data/models/task_card_model/task_card_model.dart';
 import 'features/homePage/presentation/view/home_page.dart';
 import 'features/login/presentation/view/login.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(TaskCardModelAdapter()); // Register adapter
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await SharedPreferenceHelper.initSharedPreference();
+  Firestore.initialize('online-tasks-app');
+  FirebaseAuth.initialize(
+      'AIzaSyBqgb09cuODNHrSXjhJujQ4aqxtVtPA7go', VolatileStore());
 
   String? id = SharedPreferenceHelper.getString(key: 'id');
 
@@ -35,7 +38,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: mainColor),
         useMaterial3: true,
       ),
-      home: uId.isEmpty ? const LoginScreen() : const HomePage(),
+      home: uId.isEmpty ? const LoginScreen() : const HomePageDesktop(),
     );
   }
 }

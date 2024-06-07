@@ -11,7 +11,7 @@ class HomePageCubit extends Cubit<HomePageStates> {
 
   static HomePageCubit get(context) => BlocProvider.of(context);
 
-  HomeRepoImp homeRepoImp = HomeRepoImp();
+  //HomeRepoImp homeRepoImp = HomeRepoImp();
   List<TaskCardModel> tasks = [];
 
   List<String> topics = ['All', 'Not Done', 'Done'];
@@ -23,15 +23,15 @@ class HomePageCubit extends Cubit<HomePageStates> {
     emit(GetTaskLoadingState());
 
     // open all boxes
-    await homeRepoImp.initAllBoxes();
+    //await homeRepoImp.initAllBoxes();
 
     Box box = Hive.box<TaskCardModel>('All');
     // if there is no data stored in hive boxes, get data from server.
     if (box.isEmpty) {
-      await homeRepoImp.getOnlineTasks();
+      //await homeRepoImp.getOnlineTasks();
     }
 
-    tasks.addAll(homeRepoImp.getTasks(topic: topics[currentTopicIndex]));
+    //tasks.addAll(homeRepoImp.getTasks(topic: topics[currentTopicIndex]));
 
     for (var i in tasks) {
       print('key: ${i.title}, change: ${i.status} : ${i.key}');
@@ -42,8 +42,8 @@ class HomePageCubit extends Cubit<HomePageStates> {
   }
 
   Future<void> changeTaskStatus(TaskCardModel task) async {
-    await homeRepoImp.changeTaskStatus(task: task);
-    tasks = homeRepoImp.getTasks(topic: topics[currentTopicIndex]);
+    // await homeRepoImp.changeTaskStatus(task: task);
+    //tasks = homeRepoImp.getTasks(topic: topics[currentTopicIndex]);
 
     emit(EditTaskSuccessState());
   }
@@ -54,7 +54,7 @@ class HomePageCubit extends Cubit<HomePageStates> {
   }
 
   void getTasks() async {
-    tasks = homeRepoImp.getTasks(topic: topics[currentTopicIndex]);
+    //  tasks = homeRepoImp.getTasks(topic: topics[currentTopicIndex]);
 
     if (currentTopicIndex == 0) {
       allTasksCount = tasks.length;

@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firedart/auth/user_gateway.dart';
+import 'package:firedart/firedart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../constents.dart';
-import '../../../../../cores/methods/google_auth.dart';
 import 'login_states.dart';
 
 class LoginCubit extends Cubit<LoginStates> {
@@ -10,14 +10,10 @@ class LoginCubit extends Cubit<LoginStates> {
 
   static LoginCubit get(context) => BlocProvider.of(context);
 
-  Future<void> signInWithGoogle() async {
+  Future<void> signIn({required String userName}) async {
     emit(LoadingLoginState());
     try {
-      // Create a new credential
-      final credential = await googleAuth();
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
-      uId = userCredential.user?.uid ?? '';
+      await FirebaseAuth.instance.signIn(userName, '123456');
 
       emit(SuccessLoginState());
     } catch (e) {

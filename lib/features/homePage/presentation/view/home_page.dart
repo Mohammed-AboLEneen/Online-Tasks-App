@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  HomeRepoImp homeRepoImp = HomeRepoImp();
+  //HomeRepoImp homeRepoImp = HomeRepoImp();
 
   // can call changes for loop many times and do the same operation more then one time.
   // so i will use this list to check if the operation already done or not.
@@ -125,12 +125,12 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (task.change[3] == 'delete') {
-      await homeRepoImp.remoteSource.deleteTask(task: task);
+      //await homeRepoImp.remoteSource.deleteTask(task: task);
       box.delete(task.key);
       return;
     }
     if (task.change[0] == 'add') {
-      await homeRepoImp.remoteSource.addNewTask(task: task);
+      //await homeRepoImp.remoteSource.addNewTask(task: task);
 
       List<String> changes = task.change;
       changes[0] = 'none';
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (task.change[1] == 'edit' && task.change[0] != 'add') {
-      await homeRepoImp.remoteSource.editTask(task: task);
+      //await homeRepoImp.remoteSource.editTask(task: task);
 
       List<String> changes = task.change;
       changes[1] = 'none';
@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     if (task.change[2] == 'status') {
-      await homeRepoImp.remoteSource.changeTaskStatus(task: task);
+      //await homeRepoImp.remoteSource.changeTaskStatus(task: task);
 
       List<String> changes = task.change;
       changes[2] = 'none';
