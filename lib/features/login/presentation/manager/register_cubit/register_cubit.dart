@@ -13,12 +13,9 @@ class RegisterCubit extends Cubit<RegisterStates> {
   Future<void> signUp({required String userName}) async {
     emit(LoadingRegisterState());
     try {
-      print('start');
       User user = await FirebaseAuth.instance.signUp(userName, '123456');
-      print('end');
-      uId = user.id;
 
-      print('uId : $uId');
+      uId = user.id;
 
       emit(SuccessRegisterState());
     } catch (e) {

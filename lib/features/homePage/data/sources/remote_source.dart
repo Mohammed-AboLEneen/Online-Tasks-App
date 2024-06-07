@@ -200,7 +200,7 @@ class HomePageRemoteSource {
       collection
           .document(uId)
           .collection(task.status == 1 ? 'Done' : 'Not Done')
-          .document(snapshotAll[0].id)
+          .document(snapshot[0].id)
           .update(task.toJson());
     }
   }

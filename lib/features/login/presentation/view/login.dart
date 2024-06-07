@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen>
       create: (context) => LoginCubit(),
       child: BlocConsumer<LoginCubit, LoginStates>(listener: (context, state) {
         if (state is SuccessLoginState) {
-          SharedPreferenceHelper.setString(key: 'id1', value: uId);
+          SharedPreferenceHelper.setString(key: 'id', value: uId);
 
           Navigator.push(context, PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) {

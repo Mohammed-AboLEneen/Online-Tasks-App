@@ -11,12 +11,10 @@ import '../../manager/home_page_cubit/home_page_cubit.dart';
 import 'custom_task_widget.dart';
 
 class CreateTaskButtonWidget extends StatelessWidget {
-  final int tasksLength;
   final String topic;
 
   const CreateTaskButtonWidget({
     super.key,
-    required this.tasksLength,
     required this.topic,
   });
 
