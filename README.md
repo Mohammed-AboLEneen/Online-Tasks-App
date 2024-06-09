@@ -2,7 +2,7 @@
 
 Online Tasks is a Flutter application that allows users to create tasks and save them both locally on the device and remotely in Firestore. The app integrates with Firebase and supports account creation using Gmail or traditional email and password.
 
-[Image description](https://github.com/Mohammed-AboLEneen/Online-Tasks-App/blob/main/Screenshot_2024-06-09-17-55-33-17_683af9fb8d20de0d48752675f33cd9fd.jpg)
+![alt text](https://github.com/Mohammed-AboLEneen/Online-Tasks-App/blob/main/Screenshot_2024-06-09-17-55-33-17_683af9fb8d20de0d48752675f33cd9fd.jpg)
 
 ## Features
 
