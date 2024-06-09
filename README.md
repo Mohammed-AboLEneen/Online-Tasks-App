@@ -16,13 +16,13 @@ To get started with this project, clone the repository and install the necessary
 git clone https://github.com/yourusername/online-tasks.git
 cd online-tasks
 flutter pub get
-flutter run
 ```
 
+## Running The App
 ```bash
 flutter run
 ```
 
-## Download
+## Download App
 
-You can download the app from this link : https://drive.google.com/file/d/1W0qMjD_MGA0irczrSLsdv7s6VRfxN3LA/view?usp=drive_link
+You can download apk from this link : https://drive.google.com/file/d/1W0qMjD_MGA0irczrSLsdv7s6VRfxN3LA/view?usp=drive_link
