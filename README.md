@@ -1,16 +1,19 @@
-# todo_list_app
+# Online Tasks
 
-A new Flutter project.
+Online Tasks is a Flutter application that allows users to create tasks and save them both locally on the device and remotely in Firestore. The app integrates with Firebase and supports account creation using Gmail or traditional email and password.
+
+## Features
+
+- **Account Creation**: Users can create an account using their Gmail account or by providing an email and password.
+- **Task Creation**: Users can create tasks which are saved in the device's local storage and in Firestore.
+- **Offline Support**: When the device is offline, new tasks and changes are saved in local storage. Once the device is back online, these tasks are synced to Firestore.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+To get started with this project, clone the repository and install the necessary dependencies.
 
-A few resources to get you started if this is your first Flutter project:
+```bash
+git clone https://github.com/yourusername/online-tasks.git
+cd online-tasks
+flutter pub get
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
