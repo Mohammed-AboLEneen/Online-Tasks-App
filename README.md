@@ -19,9 +19,7 @@ Online Tasks is a Flutter application that allows users to create tasks and save
 To get started with this project, clone the repository and install the necessary dependencies.
 
 ```bash
-git clone https://github.com/yourusername/online-tasks.git
-cd online-tasks
-flutter pub get
+git clone https://github.com/Mohammed-AboLEneen/Online-Tasks-App
 ```
 
 ## Running The App
