@@ -9,3 +9,8 @@ Color focusTextFormFieldColorBorder = mainColor.withOpacity(
 );
 Color mainLoadingIndicatorColor = const Color(0xff5FCCA4);
 String uId = '';
+
+String allTasksBoxName = 'All';
+String doneTasksBoxName = 'Done';
+String notDoneTasksBoxName = 'Not Done';
+String waitingTasksBoxName = 'Waiting';

@@ -12,13 +12,11 @@ import 'custom_task_card.dart';
 
 class TasksListview extends StatelessWidget {
   final List<TaskCardModel> tasks;
-  final int tasksLen;
   final String topic;
 
   const TasksListview({
     super.key,
     required this.tasks,
-    required this.tasksLen,
     required this.topic,
   });
 
@@ -49,7 +47,6 @@ class TasksListview extends StatelessWidget {
                                   child: CustomContentTaskWidget(
                                     isEdit: true,
                                     task: tasks[tasks.length - 1 - index],
-                                    index: tasksLen,
                                     topic: topic,
                                   ));
                             },

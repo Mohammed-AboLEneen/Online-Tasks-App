@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
-import 'package:intl/intl.dart';
 
+import '../../../../../constents.dart';
 import '../../../data/models/task_card_model/task_card_model.dart';
 import '../../../data/repo/home_repo_imp.dart';
 import 'home_page_states.dart';
@@ -14,10 +14,13 @@ class HomePageCubit extends Cubit<HomePageStates> {
   HomeRepoImp homeRepoImp = HomeRepoImp();
   List<TaskCardModel> tasks = [];
 
-  List<String> topics = ['All', 'Not Done', 'Done'];
+  List<String> topics = [
+    allTasksBoxName,
+    notDoneTasksBoxName,
+    doneTasksBoxName
+  ];
 
   int currentTopicIndex = 0;
-  int allTasksCount = 0;
 
   void initCurrentTasksBox() async {
     emit(GetTaskLoadingState());
@@ -25,7 +28,7 @@ class HomePageCubit extends Cubit<HomePageStates> {
     // open all boxes
     await homeRepoImp.initAllBoxes();
 
-    Box box = Hive.box<TaskCardModel>('All');
+    Box box = Hive.box<TaskCardModel>(allTasksBoxName);
     // if there is no data stored in hive boxes, get data from server.
     if (box.isEmpty) {
       await homeRepoImp.getOnlineTasks();
@@ -36,7 +39,6 @@ class HomePageCubit extends Cubit<HomePageStates> {
     for (var i in tasks) {
       print('key: ${i.title}, change: ${i.status} : ${i.key}');
     }
-    allTasksCount = tasks.length;
 
     emit(GetTaskSuccessState());
   }
@@ -56,9 +58,6 @@ class HomePageCubit extends Cubit<HomePageStates> {
   void getTasks() async {
     tasks = homeRepoImp.getTasks(topic: topics[currentTopicIndex]);
 
-    if (currentTopicIndex == 0) {
-      allTasksCount = tasks.length;
-    }
     emit(GetTaskSuccessState());
   }
 }

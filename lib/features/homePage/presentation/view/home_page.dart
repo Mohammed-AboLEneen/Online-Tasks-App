@@ -10,7 +10,7 @@ import 'package:todo_list_app/features/homePage/data/repo/home_repo_imp.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/widgets/create_task_bottom_widget.dart';
 import 'package:todo_list_app/features/homePage/presentation/view/widgets/tasks_listview.dart';
 import '../../../../cores/utlis/app_fonts.dart';
-import '../../../../cores/widgets/segment_button.dart';
+import 'widgets/segment_button_list.dart';
 import '../manager/home_page_cubit/home_page_cubit.dart';
 import '../manager/home_page_cubit/home_page_states.dart';
 
@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
         .listen((List<ConnectivityResult> result) async {
       if (result.contains(ConnectivityResult.none)) {
       } else {
-        Box box = await Hive.openBox<TaskCardModel>('changes');
+        Box box = await Hive.openBox<TaskCardModel>(waitingTasksBoxName);
         List<TaskCardModel> changes =
             box.values.toList() as List<TaskCardModel>;
 
@@ -98,13 +98,11 @@ class _HomePageState extends State<HomePage> {
                       homePageCubit.tasks.isNotEmpty)
                     TasksListview(
                         tasks: homePageCubit.tasks,
-                        tasksLen: homePageCubit.allTasksCount,
                         topic: homePageCubit
                             .topics[homePageCubit.currentTopicIndex]),
                   Padding(
                     padding: const EdgeInsets.only(top: 5),
                     child: CreateTaskButtonWidget(
-                      tasksLength: homePageCubit.allTasksCount,
                       topic:
                           homePageCubit.topics[homePageCubit.currentTopicIndex],
                     ),
@@ -117,7 +115,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> performTaskChanges(TaskCardModel task) async {
-    Box box = Hive.box<TaskCardModel>('changes');
+    Box box = Hive.box<TaskCardModel>(waitingTasksBoxName);
 
     if (task.change[3] == 'delete' && task.change[0] == 'add') {
       box.delete(task.key);
