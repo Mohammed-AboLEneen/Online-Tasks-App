@@ -17,3 +17,12 @@ git clone https://github.com/yourusername/online-tasks.git
 cd online-tasks
 flutter pub get
 flutter run
+```
+
+```bash
+flutter run
+```
+
+## Download
+
+You can download the app from this link : https://drive.google.com/file/d/1W0qMjD_MGA0irczrSLsdv7s6VRfxN3LA/view?usp=drive_link
