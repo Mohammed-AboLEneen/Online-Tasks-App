@@ -94,16 +94,6 @@ class HomePageCubit extends Cubit<HomePageStates> {
   Future<void> performTaskChanges(TaskCardModel task) async {
     Box box = Hive.box<TaskCardModel>(waitingTasksBoxName);
 
-    if (task.change[3] == 'delete' && task.change[0] == 'add') {
-      box.delete(task.key);
-      return;
-    }
-
-    if (task.change[3] == 'delete') {
-      await homeRepoImp.remoteSource.deleteTask(task: task);
-      box.delete(task.key);
-      return;
-    }
     if (task.change[0] == 'add') {
       await homeRepoImp.remoteSource.addNewTask(task: task);
 

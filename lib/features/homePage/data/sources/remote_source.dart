@@ -95,26 +95,10 @@ class HomePageRemoteSource {
       Box box1 = Hive.box<TaskCardModel>(waitingTasksBoxName);
 
       if (box1.containsKey(task.key)) {
-        var changedTask = box1.get(task.key);
-        changedTask.change?[3] = 'delete';
-
-        changedTask = changedTask.copyWith(
-            change: changedTask.change,
-            createTime: task.createTime,
-            title: task.title,
-            date: task.date,
-            status: task.status);
-
-        print('key: ${changedTask.key} change: ${changedTask.change}');
-        await box1.put(
-            task.key, changedTask.copyWith(change: changedTask.change));
-      } else {
-        task.change[3] = 'delete';
-        await box1.put(task.key, task.copyWith());
+        await box1.delete(
+          task.key,
+        );
       }
-      box1.values.toList().forEach((element) {
-        print('key: ${element.title}, change: ${element.change}');
-      });
       return;
     }
 
@@ -151,7 +135,6 @@ class HomePageRemoteSource {
 
   Future<void> editTask({required TaskCardModel task}) async {
     bool statusOfInternet = await checkInternetStatus();
-    print('statusOfInternet: ${statusOfInternet}');
     if (statusOfInternet == false) {
       Box box1 = Hive.box<TaskCardModel>(waitingTasksBoxName);
 
@@ -166,7 +149,6 @@ class HomePageRemoteSource {
             date: task.date,
             status: task.status);
 
-        print('key: ${changedTask.key} change: ${changedTask.change}');
         await box1.put(
             task.key, changedTask.copyWith(change: changedTask.change));
       } else {
