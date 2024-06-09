@@ -12,7 +12,7 @@ class HomePageRemoteSource {
     bool statusOfInternet = await checkInternetStatus();
 
     if (statusOfInternet == false) {
-      Box box1 = Hive.box<TaskCardModel>('changes');
+      Box box1 = Hive.box<TaskCardModel>(waitingTasksBoxName);
       var changedTask = task.copyWith();
       changedTask.change[0] = 'add';
       await box1.put(task.key, changedTask);
@@ -25,15 +25,15 @@ class HomePageRemoteSource {
 
     Map<String, dynamic> data = task.toJson();
 
-    collection.document(uId).collection('All').add(data);
-    collection.document(uId).collection('Not Done').add(data);
+    collection.document(uId).collection(allTasksBoxName).add(data);
+    collection.document(uId).collection(notDoneTasksBoxName).add(data);
   }
 
   Future<List<TaskCardModel>> getData() async {
     print(uId);
     // Get docs from collection reference
     Page<Document> querySnapshot =
-        await collection.document(uId).collection('All').get();
+        await collection.document(uId).collection(allTasksBoxName).get();
 
     // Get data from docs and convert map to List
     List<TaskCardModel> allData = querySnapshot.isEmpty
@@ -44,13 +44,13 @@ class HomePageRemoteSource {
                 ))
             .toList();
 
-    Box box1 = Hive.box<TaskCardModel>('All');
+    Box box1 = Hive.box<TaskCardModel>(allTasksBoxName);
     for (TaskCardModel task in allData) {
       box1.put(task.key, task);
     }
 
     Page<Document> querySnapshot2 =
-        await collection.document(uId).collection('Done').get();
+        await collection.document(uId).collection(doneTasksBoxName).get();
 
     List<TaskCardModel> doneData = querySnapshot2.isEmpty
         ? []
@@ -61,13 +61,13 @@ class HomePageRemoteSource {
             .toList();
 
     // Get data from docs and convert map to List
-    Box box2 = Hive.box<TaskCardModel>('Done');
+    Box box2 = Hive.box<TaskCardModel>(doneTasksBoxName);
     for (TaskCardModel task in doneData) {
       box2.put(task.key, task);
     }
 
     Page<Document> querySnapshot3 =
-        await collection.document(uId).collection('Not Done').get();
+        await collection.document(uId).collection(notDoneTasksBoxName).get();
 
     // Get data from docs and convert map to List
     List<TaskCardModel> notDoneData = querySnapshot3.isEmpty
@@ -78,7 +78,7 @@ class HomePageRemoteSource {
                 ))
             .toList();
 
-    Box box3 = Hive.box<TaskCardModel>('Not Done');
+    Box box3 = Hive.box<TaskCardModel>(notDoneTasksBoxName);
     for (TaskCardModel task in notDoneData) {
       box3.put(task.key, task);
     }
@@ -89,7 +89,7 @@ class HomePageRemoteSource {
   Future<void> deleteTask({required TaskCardModel task}) async {
     bool statusOfInternet = await checkInternetStatus();
     if (statusOfInternet == false) {
-      Box box1 = Hive.box<TaskCardModel>('changes');
+      Box box1 = Hive.box<TaskCardModel>(waitingTasksBoxName);
 
       if (box1.containsKey(task.key)) {
         var changedTask = box1.get(task.key);
@@ -117,14 +117,14 @@ class HomePageRemoteSource {
 
     var snapshotAll = await collection
         .document(uId)
-        .collection('All')
+        .collection(allTasksBoxName)
         .where('key', isEqualTo: task.key)
         .limit(1)
         .get();
 
     var snapshot = await collection
         .document(uId)
-        .collection(task.status == 1 ? 'Done' : 'Not Done')
+        .collection(task.status == 1 ? doneTasksBoxName : notDoneTasksBoxName)
         .where('key', isEqualTo: task.key)
         .limit(1)
         .get();
@@ -132,7 +132,7 @@ class HomePageRemoteSource {
     if (snapshotAll.isNotEmpty) {
       collection
           .document(uId)
-          .collection('All')
+          .collection(allTasksBoxName)
           .document(snapshot[0].id)
           .delete();
     }
@@ -140,7 +140,7 @@ class HomePageRemoteSource {
     if (snapshot.isNotEmpty) {
       collection
           .document(uId)
-          .collection(task.status == 1 ? 'Done' : 'Not Done')
+          .collection(task.status == 1 ? doneTasksBoxName : notDoneTasksBoxName)
           .document(snapshot[0].id)
           .delete();
     }
@@ -149,9 +149,8 @@ class HomePageRemoteSource {
   Future<void> editTask({required TaskCardModel task}) async {
     bool statusOfInternet = await checkInternetStatus();
     if (statusOfInternet == false) {
-      Box box1 = Hive.box<TaskCardModel>('changes');
+      Box box1 = Hive.box<TaskCardModel>(waitingTasksBoxName);
 
-      // print('task: ${t.title}, key: ${t.key} change: ${t.change}');
       if (box1.containsKey(task.key)) {
         var changedTask = box1.get(task.key);
         changedTask.change?[1] = 'edit';
@@ -162,7 +161,6 @@ class HomePageRemoteSource {
             date: task.date,
             status: task.status);
 
-        print('key: ${changedTask.key} change: ${changedTask.change}');
         await box1.put(
             task.key, changedTask.copyWith(change: changedTask.change));
       } else {
@@ -179,19 +177,19 @@ class HomePageRemoteSource {
 
     var snapshotAll = await collection
         .document(uId)
-        .collection('All')
+        .collection(allTasksBoxName)
         .where('key', isEqualTo: task.key)
         .get();
     var snapshot = await collection
         .document(uId)
-        .collection(task.status == 1 ? 'Done' : 'Not Done')
+        .collection(task.status == 1 ? doneTasksBoxName : notDoneTasksBoxName)
         .where('key', isEqualTo: task.key)
         .get();
 
     if (snapshotAll.isNotEmpty) {
       collection
           .document(uId)
-          .collection('All')
+          .collection(allTasksBoxName)
           .document(snapshotAll[0].id)
           .update(task.toJson());
     }
@@ -199,7 +197,7 @@ class HomePageRemoteSource {
     if (snapshot.isNotEmpty) {
       collection
           .document(uId)
-          .collection(task.status == 1 ? 'Done' : 'Not Done')
+          .collection(task.status == 1 ? doneTasksBoxName : notDoneTasksBoxName)
           .document(snapshot[0].id)
           .update(task.toJson());
     }
@@ -219,7 +217,7 @@ class HomePageRemoteSource {
     }
     bool statusOfInternet = await checkInternetStatus();
     if (statusOfInternet == false) {
-      Box box1 = Hive.box<TaskCardModel>('changes');
+      Box box1 = Hive.box<TaskCardModel>(waitingTasksBoxName);
 
       if (box1.containsKey(task.key)) {
         TaskCardModel changedTask = box1.get(task.key);
@@ -255,44 +253,43 @@ class HomePageRemoteSource {
 
     var snapshotAll = await collection
         .document(uId)
-        .collection('All')
+        .collection(allTasksBoxName)
         .where('key', isEqualTo: task.key)
         .limit(1)
         .get();
 
     var snapshotNotDone = await collection
         .document(uId)
-        .collection('Not Done')
+        .collection(notDoneTasksBoxName)
         .where('key', isEqualTo: task.key)
         .limit(1)
         .get();
 
     var snapshotDone = await collection
         .document(uId)
-        .collection('Done')
+        .collection(doneTasksBoxName)
         .where('key', isEqualTo: task.key)
         .limit(1)
         .get();
 
     collection
         .document(uId)
-        .collection('All')
+        .collection(allTasksBoxName)
         .document(snapshotAll[0].id)
         .update(task.copyWith(status: newStatus).toJson());
 
-    print('newStatus: ${newStatus}');
     if (newStatus == 1) {
       if (snapshotDone.isEmpty) {
         collection
             .document(uId)
-            .collection('Done')
+            .collection(doneTasksBoxName)
             .add(task.copyWith(status: newStatus).toJson());
       }
 
       if (snapshotNotDone.isNotEmpty) {
         collection
             .document(uId)
-            .collection('Not Done')
+            .collection(notDoneTasksBoxName)
             .document(snapshotNotDone[0].id)
             .delete();
       }
@@ -300,14 +297,14 @@ class HomePageRemoteSource {
       if (snapshotNotDone.isEmpty) {
         collection
             .document(uId)
-            .collection('Not Done')
+            .collection(notDoneTasksBoxName)
             .add(task.copyWith(status: newStatus).toJson());
       }
 
       if (snapshotDone.isNotEmpty) {
         collection
             .document(uId)
-            .collection('Done')
+            .collection(doneTasksBoxName)
             .document(snapshotDone[0].id)
             .delete();
       }

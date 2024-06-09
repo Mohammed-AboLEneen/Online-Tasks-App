@@ -9,14 +9,14 @@ import 'features/login/presentation/view/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Hive.init(r'C:\Users\mohme\');
-  await Hive.initFlutter(r'C:\Users\mohme\');
+  Hive.init(r'C:\Users\mohme\'); // change this path with your own.
+  await Hive.initFlutter(r'C:\Users\mohme\'); // change this path with your own.
   Hive.registerAdapter(TaskCardModelAdapter()); // Register adapter
   await SharedPreferenceHelper.initSharedPreference();
   Firestore.initialize('online-tasks-app');
   FirebaseAuth.initialize(
       'AIzaSyBqgb09cuODNHrSXjhJujQ4aqxtVtPA7go', VolatileStore());
-  
+
   String? id = SharedPreferenceHelper.getString(key: 'id');
 
   if (id != null) {

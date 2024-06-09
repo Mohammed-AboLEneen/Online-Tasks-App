@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_list_app/constents.dart';
 
-import '../../features/homePage/presentation/manager/home_page_cubit/home_page_cubit.dart';
-import 'custom_textbutton.dart';
+import '../../manager/home_page_cubit/home_page_cubit.dart';
+import '../../../../../cores/widgets/custom_textbutton.dart';
 
 class SegmentButtonList extends StatefulWidget {
   const SegmentButtonList({super.key});
@@ -17,6 +17,7 @@ class _SegmentButtonListState extends State<SegmentButtonList> {
     'All',
     'Not Done',
     'Done',
+    'Waiting',
   ];
 
   int index = 0;

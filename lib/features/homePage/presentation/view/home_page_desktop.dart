@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,7 +12,7 @@ import 'package:todo_list_app/features/homePage/presentation/view/widgets/tasks_
 import '../../../../constents.dart';
 import '../../../../cores/methods/show_alrt_dialog.dart';
 import '../../../../cores/utlis/app_fonts.dart';
-import '../../../../cores/widgets/segment_button.dart';
+import 'widgets/segment_button_list.dart';
 import '../../data/models/task_card_model/task_card_model.dart';
 import '../../data/repo/home_repo_imp.dart';
 import '../manager/home_page_cubit/home_page_states.dart';
@@ -31,35 +30,14 @@ class _HomePageDesktopState extends State<HomePageDesktop> {
   @override
   void initState() {
     super.initState();
-
-    StreamSubscription<List<ConnectivityResult>> subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((List<ConnectivityResult> result) async {
-      if (result.contains(ConnectivityResult.none)) {
-      } else {
-        Box box = await Hive.openBox<TaskCardModel>('changes');
-        List<TaskCardModel> changes =
-            box.values.toList() as List<TaskCardModel>;
-
-        if (changes.isNotEmpty) {
-          // order the changes : add > edit > status > delete.
-          for (int i = 0; i < changes.length; i++) {
-            if (changes[i].change.every((item) => item == 'none')) {
-              box.delete(changes[i].key);
-              continue;
-            }
-
-            performTaskChanges(changes[i]);
-          }
-        }
-      }
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => HomePageCubit()..initCurrentTasksBox(),
+        create: (context) => HomePageCubit()
+          ..initCurrentTasksBox()
+          ..initConnectivity(),
         child: BlocBuilder<HomePageCubit, HomePageStates>(
             builder: (context, state) {
           HomePageCubit homePageCubit = HomePageCubit.get(context);
