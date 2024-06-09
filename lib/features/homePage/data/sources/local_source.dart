@@ -20,6 +20,8 @@ class HomeLocalSource {
       tasks = Hive.box<TaskCardModel>(notDoneTasksBoxName).values.toList();
     } else if (topic == doneTasksBoxName) {
       tasks = Hive.box<TaskCardModel>(doneTasksBoxName).values.toList();
+    } else {
+      tasks = Hive.box<TaskCardModel>(waitingTasksBoxName).values.toList();
     }
 
     return tasks;

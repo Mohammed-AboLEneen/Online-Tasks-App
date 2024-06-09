@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen>
               msg: 'Login Success',
               toastMessageType: ToastMessageType.successMessage);
 
-          SharedPreferenceHelper.setString(key: 'idn', value: uId);
+          SharedPreferenceHelper.setString(key: 'id', value: uId);
 
           Navigator.push(context, PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) {
