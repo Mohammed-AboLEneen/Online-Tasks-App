@@ -17,3 +17,7 @@ git clone https://github.com/yourusername/online-tasks.git
 cd online-tasks
 flutter pub get
 
+## Running the App
+
+```bash
+flutter run
